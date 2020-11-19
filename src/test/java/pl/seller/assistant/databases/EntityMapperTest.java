@@ -1,7 +1,6 @@
 package pl.seller.assistant.databases;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static pl.seller.assistant.databases.EntityMapper.toBlob;
 import static pl.seller.assistant.databases.EntityMapper.toDto;
 import static pl.seller.assistant.databases.EntityMapper.toEntity;
@@ -135,9 +134,4 @@ class EntityMapperTest {
     assertEquals(1, blob.size());
     assertEquals(1, EntityMapper.toBufferedImage(blob).size());
   }
-
-/*  @Test
-  void should_throw_exception_for_incorrect_bufferedImage_format() {
-    assertThrows(RuntimeException.class, () -> toBlob(*//* NIE .png FORMAT*//*));
-  }*/
 }
