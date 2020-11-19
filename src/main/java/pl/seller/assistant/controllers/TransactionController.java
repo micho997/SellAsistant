@@ -43,7 +43,7 @@ public class TransactionController {
     URI location = ServletUriComponentsBuilder
         .fromCurrentRequest()
         .path("/{id}")
-        .buildAndExpand(1)
+        .buildAndExpand(transactionDto.getId())
         .toUri();
 
     return ResponseEntity.created(location).body(transactionDto);

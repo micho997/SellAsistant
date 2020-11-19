@@ -11,7 +11,7 @@ public class CommodityDto {
   private BigDecimal currentPrice;
   private LocalDate gotTime;
   private LocalDate soldTime;
-  private Long imagesId;
+  private Long imageId;
 
   CommodityDto() {
 
@@ -65,12 +65,12 @@ public class CommodityDto {
     this.soldTime = soldTime;
   }
 
-  public Long getImagesId() {
-    return imagesId;
+  public Long getImageId() {
+    return imageId;
   }
 
-  public void setImagesId(Long imagesId) {
-    this.imagesId = imagesId;
+  public void setImageId(Long imageId) {
+    this.imageId = imageId;
   }
 
   public static final class CommodityDtoBuilder {
@@ -81,13 +81,13 @@ public class CommodityDto {
     private BigDecimal currentPrice;
     private LocalDate gotTime;
     private LocalDate soldTime;
-    private Long imagesId;
+    private Long imageId;
 
     private CommodityDtoBuilder() {
 
     }
 
-    public static CommodityDtoBuilder anCommodityDto() {
+    public static CommodityDtoBuilder anCommodity() {
       return new CommodityDtoBuilder();
     }
 
@@ -121,8 +121,8 @@ public class CommodityDto {
       return this;
     }
 
-    public CommodityDtoBuilder imagesIds(Long imagesIds) {
-      this.imagesId = imagesIds;
+    public CommodityDtoBuilder imageId(Long imageId) {
+      this.imageId = imageId;
       return this;
     }
 
@@ -134,7 +134,7 @@ public class CommodityDto {
       commodityDto.setCurrentPrice(currentPrice);
       commodityDto.setGotTime(gotTime);
       commodityDto.setSoldTime(soldTime);
-      commodityDto.setImagesId(imagesId);
+      commodityDto.setImageId(imageId);
       return commodityDto;
     }
   }

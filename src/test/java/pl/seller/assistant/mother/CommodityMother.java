@@ -58,13 +58,13 @@ public class CommodityMother {
   }
 
   public static CommodityDto dto(Commodity commodity, Long imagesId) {
-    return CommodityDtoBuilder.anCommodityDto()
+    return CommodityDtoBuilder.anCommodity()
         .producer(commodity.getProducer())
         .price(commodity.getPrice())
         .currentPrice(commodity.getCurrentPrice())
         .gotTime(commodity.getGotTime())
         .soldTime(commodity.getSoldTime())
-        .imagesIds(imagesId).build();
+        .imageId(imagesId).build();
   }
 
   public static CommodityEntity entity(Commodity commodity, ImagesEntity imagesEntity) {
@@ -74,6 +74,6 @@ public class CommodityMother {
         .currentPrice(commodity.getCurrentPrice())
         .gotTime(commodity.getGotTime())
         .soldTime(commodity.getSoldTime())
-        .imagesId(imagesEntity).build();
+        .imageId(imagesEntity).build();
   }
 }

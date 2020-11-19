@@ -31,7 +31,7 @@ public class EntityMapper {
         .currentPrice(commodity.getCurrentPrice())
         .gotTime(commodity.getGotTime())
         .soldTime(commodity.getSoldTime())
-        .imagesId(imagesEntity).build();
+        .imageId(imagesEntity).build();
   }
 
   public static CommodityEntity toEntity(CommodityDto commodityDto, ImagesEntity imagesEntity) {
@@ -41,42 +41,42 @@ public class EntityMapper {
         .currentPrice(commodityDto.getCurrentPrice())
         .gotTime(commodityDto.getGotTime())
         .soldTime(commodityDto.getSoldTime())
-        .imagesId(imagesEntity).build();
+        .imageId(imagesEntity).build();
   }
 
   public static TransactionEntity toEntity(Transaction transaction, List<CommodityEntity> commodityEntities) {
-    return TransactionEntityBuilder.anTransactionEntity()
+    return TransactionEntityBuilder.anTransaction()
         .date(transaction.getDate())
         .price(transaction.getPrice())
         .earned(transaction.getEarned())
-        .commoditiesIds(commodityEntities).build();
+        .commodities(commodityEntities).build();
   }
 
   public static TransactionEntity toEntity(TransactionDto transactionDto, List<CommodityEntity> commodityEntities) {
-    return TransactionEntityBuilder.anTransactionEntity()
+    return TransactionEntityBuilder.anTransaction()
         .date(transactionDto.getDate())
         .price(transactionDto.getPrice())
         .earned(transactionDto.getEarned())
-        .commoditiesIds(commodityEntities).build();
+        .commodities(commodityEntities).build();
   }
 
   public static CommodityDto toDto(CommodityEntity entity) {
-    return CommodityDtoBuilder.anCommodityDto()
+    return CommodityDtoBuilder.anCommodity()
         .producer(entity.getProducer())
         .price(entity.getPrice())
         .currentPrice(entity.getCurrentPrice())
         .gotTime(entity.getGotTime())
         .soldTime(entity.getSoldTime())
-        .imagesIds(entity.getImagesId().getId()).build();
+        .imageId(entity.getImageId().getId()).build();
   }
 
   public static TransactionDto toDto(TransactionEntity entity) {
-    return TransactionDtoBuilder.anTransactionDto()
+    return TransactionDtoBuilder.anTransaction()
         .id(entity.getId())
         .date(entity.getDate())
         .price(entity.getPrice())
         .earned(entity.getEarned())
-        .commoditiesIds(entity.getCommoditiesIds().stream()
+        .commodityIds(entity.getCommodities().stream()
             .map(CommodityEntity::getId)
             .collect(Collectors.toList())).build();
   }

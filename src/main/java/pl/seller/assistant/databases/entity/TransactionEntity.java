@@ -26,7 +26,7 @@ public class TransactionEntity {
   @Column(nullable = false)
   private BigDecimal earned;
   @OneToMany(fetch = FetchType.EAGER)
-  private List<CommodityEntity> commoditiesIds;
+  private List<CommodityEntity> commodities;
 
   public TransactionEntity() {
   }
@@ -63,12 +63,12 @@ public class TransactionEntity {
     this.earned = earned;
   }
 
-  public List<CommodityEntity> getCommoditiesIds() {
-    return commoditiesIds;
+  public List<CommodityEntity> getCommodities() {
+    return commodities;
   }
 
-  public void setCommoditiesIds(List<CommodityEntity> commoditiesIds) {
-    this.commoditiesIds = commoditiesIds;
+  public void setCommodities(List<CommodityEntity> commodities) {
+    this.commodities = commodities;
   }
 
   public static final class TransactionEntityBuilder {
@@ -76,12 +76,12 @@ public class TransactionEntity {
     private LocalDate date;
     private BigDecimal price;
     private BigDecimal earned;
-    private List<CommodityEntity> commoditiesIds;
+    private List<CommodityEntity> commodities;
 
     private TransactionEntityBuilder() {
     }
 
-    public static TransactionEntityBuilder anTransactionEntity() {
+    public static TransactionEntityBuilder anTransaction() {
       return new TransactionEntityBuilder();
     }
 
@@ -100,8 +100,8 @@ public class TransactionEntity {
       return this;
     }
 
-    public TransactionEntityBuilder commoditiesIds(List<CommodityEntity> commoditiesIds) {
-      this.commoditiesIds = commoditiesIds;
+    public TransactionEntityBuilder commodities(List<CommodityEntity> commodities) {
+      this.commodities = commodities;
       return this;
     }
 
@@ -110,7 +110,7 @@ public class TransactionEntity {
       transactionEntity.setDate(date);
       transactionEntity.setPrice(price);
       transactionEntity.setEarned(earned);
-      transactionEntity.setCommoditiesIds(commoditiesIds);
+      transactionEntity.setCommodities(commodities);
       return transactionEntity;
     }
   }

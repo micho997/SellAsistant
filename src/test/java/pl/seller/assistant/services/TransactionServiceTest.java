@@ -34,7 +34,7 @@ class TransactionServiceTest {
   }
 
   @Test
-  void shouldSaveTransactionInDatabase() {
+  void should_save_transaction_in_database() {
     // then
     TransactionDto transactionDto = transactionService.save(exampleTransaction);
 
@@ -43,7 +43,7 @@ class TransactionServiceTest {
   }
 
   @Test
-  void shouldGetTransactionById() {
+  void should_get_transaction_by_id() {
     // given
     TransactionDto transactionDto1 = transactionService.save(exampleTransaction);
 

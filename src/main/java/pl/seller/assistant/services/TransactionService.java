@@ -8,13 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.seller.assistant.databases.EntityMapper;
 import pl.seller.assistant.databases.TransactionsRepository;
 import pl.seller.assistant.databases.entity.CommodityEntity;
-import pl.seller.assistant.databases.entity.TransactionEntity;
 import pl.seller.assistant.models.Transaction;
 import pl.seller.assistant.models.TransactionDto;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -47,18 +44,5 @@ public class TransactionService {
     return transactionsRepository.findAll().stream()
         .map(EntityMapper::toDto)
         .collect(Collectors.toList());
-  }
-
-  public void updateEarned(Long transactionId, BigDecimal commoditySoldPrice) {
-    Optional<TransactionEntity> transactionEntity = transactionsRepository.findById(transactionId);
-
-    if (transactionEntity.isPresent()) {
-      TransactionEntity updated = transactionEntity.get();
-
-      updated.setEarned(commoditySoldPrice.plus());
-      transactionsRepository.save(updated);
-    } else {
-      throw new NoSuchElementException("Can not find current transaction in database");
-    }
   }
 }

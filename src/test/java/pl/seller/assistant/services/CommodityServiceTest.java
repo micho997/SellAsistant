@@ -32,7 +32,7 @@ class CommodityServiceTest {
   }
 
   @Test
-  void shouldSaveCommodityInDatabase() {
+  void should_save_commodity_in_database() {
     // then
     CommodityEntity entity = commodityService.save(exampleCommodity);
 
@@ -41,7 +41,7 @@ class CommodityServiceTest {
   }
 
   @Test
-  void shouldGetCommodityFromDatabase() {
+  void should_get_commodity_from_database() {
     // given
     CommodityEntity saved = commodityService.save(exampleCommodity);
 

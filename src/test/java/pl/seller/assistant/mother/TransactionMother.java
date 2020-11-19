@@ -31,18 +31,18 @@ public class TransactionMother {
   }
 
   public static TransactionDto dto(Transaction transaction, List<Long> commodityIds) {
-    return TransactionDtoBuilder.anTransactionDto()
+    return TransactionDtoBuilder.anTransaction()
         .date(transaction.getDate())
         .price(transaction.getPrice())
         .earned(transaction.getEarned())
-        .commoditiesIds(commodityIds).build();
+        .commodityIds(commodityIds).build();
   }
 
   public static TransactionEntity entity(Transaction transaction, List<CommodityEntity> commodityEntities) {
-    return TransactionEntityBuilder.anTransactionEntity()
+    return TransactionEntityBuilder.anTransaction()
         .date(transaction.getDate())
         .price(transaction.getPrice())
         .earned(transaction.getEarned())
-        .commoditiesIds(commodityEntities).build();
+        .commodities(commodityEntities).build();
   }
 }

@@ -8,12 +8,12 @@ import java.util.List;
 
 public class Commodity {
 
-  private List<BufferedImage> images;
   private String producer;
   private BigDecimal price;
   private BigDecimal currentPrice;
   private LocalDate gotTime;
   private LocalDate soldTime;
+  private List<BufferedImage> images;
 
   Commodity() {
   }
@@ -68,23 +68,18 @@ public class Commodity {
 
   public static final class CommodityBuilder {
 
-    private List<BufferedImage> images;
     private String producer;
     private BigDecimal price;
     private BigDecimal currentPrice;
     private LocalDate gotTime;
     private LocalDate soldTime;
+    private List<BufferedImage> images;
 
     public CommodityBuilder() {
     }
 
     public static CommodityBuilder anCommodity() {
       return new CommodityBuilder();
-    }
-
-    public CommodityBuilder images(List<BufferedImage> images) {
-      this.images = images;
-      return this;
     }
 
     public CommodityBuilder producer(String producer) {
@@ -109,6 +104,11 @@ public class Commodity {
 
     public CommodityBuilder soldTime(LocalDate soldTime) {
       this.soldTime = soldTime;
+      return this;
+    }
+
+    public CommodityBuilder images(List<BufferedImage> images) {
+      this.images = images;
       return this;
     }
 

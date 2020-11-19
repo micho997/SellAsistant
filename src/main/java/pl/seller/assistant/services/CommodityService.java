@@ -36,32 +36,4 @@ public class CommodityService {
     Optional<CommodityEntity> commodityEntity = commoditiesRepository.findById(id);
     return commodityEntity.map(EntityMapper::toDto);
   }
-
-/*  public boolean sellWithCurrentPrice(Long id, LocalDate soldTime) {
-    Optional<CommodityEntity> commodity = commoditiesRepository.findById(id);
-
-    if (commodity.isPresent()) {
-      CommodityEntity updated = commodity.get();
-      updated.setSoldTime(soldTime);
-      return true;
-    }
-    return false;
-  }
-
-  public boolean sellWithNewPrice(Long id, LocalDate soldTime, BigDecimal newPrice) {
-    Optional<CommodityEntity> commodity = commoditiesRepository.findById(id);
-
-    if (commodity.isPresent()) {
-      CommodityEntity updated = commodity.get();
-      updated.setCurrentPrice(newPrice);
-      updated.setSoldTime(soldTime);
-      return true;
-    }
-    return false;
-  }
-
-  private void sell(CommodityEntity commodityEntity) {
-    transactionService.updateEarned(commodityEntity.getTransactionId(), commodityEntity.getCurrentPrice());
-    commoditiesRepository.save(commodityEntity);
-  }*/
 }

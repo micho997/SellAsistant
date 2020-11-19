@@ -18,22 +18,22 @@ public class SameObjectChecker {
     assertEquals(transactionDto.getDate(), transactionEntity.getDate());
     assertEquals(transactionDto.getPrice(), transactionEntity.getPrice());
     assertEquals(transactionDto.getEarned(), transactionEntity.getEarned());
-    assertNotNull(transactionEntity.getCommoditiesIds());
-    assertNotNull(transactionDto.getCommoditiesIds());
+    assertNotNull(transactionEntity.getCommodities());
+    assertNotNull(transactionDto.getCommodityIds());
   }
 
   public static void equalTransactionTransactionEntity(Transaction transaction, TransactionEntity transactionEntity) {
     assertEquals(transaction.getDate(), transactionEntity.getDate());
     assertEquals(transaction.getPrice(), transactionEntity.getPrice());
     assertEquals(transaction.getEarned(), transactionEntity.getEarned());
-    assertEquals(transaction.getCommodities().size(), transactionEntity.getCommoditiesIds().size());
+    assertEquals(transaction.getCommodities().size(), transactionEntity.getCommodities().size());
   }
 
   public static void equalTransactionTransactionDto(Transaction transaction, TransactionDto transactionDto) {
     assertEquals(transaction.getDate(), transactionDto.getDate());
     assertEquals(transaction.getPrice(), transactionDto.getPrice());
     assertEquals(transaction.getEarned(), transactionDto.getEarned());
-    assertEquals(transaction.getCommodities().size(), transactionDto.getCommoditiesIds().size());
+    assertEquals(transaction.getCommodities().size(), transactionDto.getCommodityIds().size());
   }
 
   public static void equalCommodityCommodityEntity(Commodity commodity, CommodityEntity commodityEntity) {
@@ -43,7 +43,7 @@ public class SameObjectChecker {
     assertEquals(commodity.getGotTime(), commodityEntity.getGotTime());
     assertEquals(commodity.getSoldTime(), commodityEntity.getSoldTime());
     assertNotNull(commodity.getImages());
-    assertNotNull(commodityEntity.getImagesId());
+    assertNotNull(commodityEntity.getImageId());
   }
 
   public static void equalCommodityDtoCommodityEntity(CommodityDto commodityDto, CommodityEntity commodityEntity) {
@@ -52,7 +52,7 @@ public class SameObjectChecker {
     assertEquals(commodityDto.getCurrentPrice(), commodityEntity.getCurrentPrice());
     assertEquals(commodityDto.getGotTime(), commodityEntity.getGotTime());
     assertEquals(commodityDto.getSoldTime(), commodityEntity.getSoldTime());
-    assertNotNull(commodityEntity.getImagesId()
+    assertNotNull(commodityEntity.getImageId()
     );
   }
 }

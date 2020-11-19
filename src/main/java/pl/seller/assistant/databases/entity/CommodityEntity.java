@@ -24,14 +24,14 @@ public class CommodityEntity {
   private BigDecimal price;
   @Column(name = "current_price", nullable = false)
   private BigDecimal currentPrice;
-  @Column(nullable = false)
+  @Column(name = "got_time", nullable = false)
   private LocalDate gotTime;
   @Column(name = "sold_time")
   private LocalDate soldTime;
   @OneToOne(fetch = FetchType.EAGER)
-  private ImagesEntity imagesId;
+  private ImagesEntity imageId;
 
-  public CommodityEntity() {
+  CommodityEntity() {
   }
 
   public Long getId() {
@@ -82,12 +82,12 @@ public class CommodityEntity {
     this.soldTime = soldTime;
   }
 
-  public ImagesEntity getImagesId() {
-    return imagesId;
+  public ImagesEntity getImageId() {
+    return imageId;
   }
 
-  public void setImagesId(ImagesEntity imagesId) {
-    this.imagesId = imagesId;
+  public void setImageId(ImagesEntity imageId) {
+    this.imageId = imageId;
   }
 
   public static final class CommodityEntityBuilder {
@@ -97,7 +97,7 @@ public class CommodityEntity {
     private BigDecimal currentPrice;
     private LocalDate gotTime;
     private LocalDate soldTime;
-    private ImagesEntity imagesId;
+    private ImagesEntity imageId;
 
     private CommodityEntityBuilder() {
     }
@@ -131,8 +131,8 @@ public class CommodityEntity {
       return this;
     }
 
-    public CommodityEntityBuilder imagesId(ImagesEntity imagesId) {
-      this.imagesId = imagesId;
+    public CommodityEntityBuilder imageId(ImagesEntity imageId) {
+      this.imageId = imageId;
       return this;
     }
 
@@ -143,7 +143,7 @@ public class CommodityEntity {
       commodityEntity.setCurrentPrice(currentPrice);
       commodityEntity.setGotTime(gotTime);
       commodityEntity.setSoldTime(soldTime);
-      commodityEntity.setImagesId(imagesId);
+      commodityEntity.setImageId(imageId);
       return commodityEntity;
     }
   }

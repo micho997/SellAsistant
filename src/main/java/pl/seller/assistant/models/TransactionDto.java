@@ -10,7 +10,7 @@ public class TransactionDto {
   private LocalDate date;
   private BigDecimal price;
   private BigDecimal earned;
-  private List<Long> commoditiesIds;
+  private List<Long> commodityIds;
 
   TransactionDto() {
 
@@ -48,12 +48,12 @@ public class TransactionDto {
     this.earned = earned;
   }
 
-  public List<Long> getCommoditiesIds() {
-    return commoditiesIds;
+  public List<Long> getCommodityIds() {
+    return commodityIds;
   }
 
-  public void setCommoditiesIds(List<Long> commoditiesIds) {
-    this.commoditiesIds = commoditiesIds;
+  public void setCommodityIds(List<Long> commodityIds) {
+    this.commodityIds = commodityIds;
   }
 
   public static final class TransactionDtoBuilder {
@@ -62,13 +62,13 @@ public class TransactionDto {
     private LocalDate date;
     private BigDecimal price;
     private BigDecimal earned;
-    private List<Long> commoditiesIds;
+    private List<Long> commodityIds;
 
     private TransactionDtoBuilder() {
 
     }
 
-    public static TransactionDtoBuilder anTransactionDto() {
+    public static TransactionDtoBuilder anTransaction() {
       return new TransactionDtoBuilder();
     }
 
@@ -92,8 +92,8 @@ public class TransactionDto {
       return this;
     }
 
-    public TransactionDtoBuilder commoditiesIds(List<Long> commoditiesIds) {
-      this.commoditiesIds = commoditiesIds;
+    public TransactionDtoBuilder commodityIds(List<Long> commoditiesIds) {
+      this.commodityIds = commoditiesIds;
       return this;
     }
 
@@ -103,7 +103,7 @@ public class TransactionDto {
       transactionDto.setDate(date);
       transactionDto.setPrice(price);
       transactionDto.setEarned(earned);
-      transactionDto.setCommoditiesIds(commoditiesIds);
+      transactionDto.setCommodityIds(commodityIds);
       return transactionDto;
     }
   }
