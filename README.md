@@ -1,6 +1,6 @@
  Sell Assistant
 -
-This application is supporting re-sale
+This application support re-sale
 
 Overview
 -
