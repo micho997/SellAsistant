@@ -13,6 +13,7 @@ Technology
 #### back-end
 * Java 11
 * Spring data
+* Spring security
 * Hibernate
 * H2
 * Spring boot
