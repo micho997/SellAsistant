@@ -1,5 +1,10 @@
 package pl.seller.assistant.user.repository;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +20,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserEntity implements UserDetails {
 
   @Id
@@ -26,9 +36,6 @@ public class UserEntity implements UserDetails {
   private String password;
   @Column(nullable = false)
   private String role;
-
-  public UserEntity() {
-  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -63,59 +70,5 @@ public class UserEntity implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
-  }
-
-  public String getRole() {
-    return role;
-  }
-
-  public void setRole(String role) {
-    this.role = role;
-  }
-
-  public static final class UserEntityBuilder {
-
-    private String username;
-    private String password;
-
-    public UserEntityBuilder() {
-    }
-
-    public static UserEntityBuilder anUser() {
-      return new UserEntityBuilder();
-    }
-
-    public UserEntityBuilder username(String username) {
-      this.username = username;
-      return this;
-    }
-
-    public UserEntityBuilder password(String password) {
-      this.password = password;
-      return this;
-    }
-
-    public UserEntity build() {
-      UserEntity userEntity = new UserEntity();
-      userEntity.setUsername(username);
-      userEntity.setPassword(password);
-      return userEntity;
-    }
   }
 }

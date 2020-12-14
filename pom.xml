@@ -29,9 +29,13 @@
     <spring-boot-starter-web-services.version>2.3.4.RELEASE
     </spring-boot-starter-web-services.version>
     <thymeleaf-spring5.version>3.0.11.RELEASE</thymeleaf-spring5.version>
+    <lombok.version>1.18.16</lombok.version>
+    <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
     <org.junit.jupiter.version>5.6.2</org.junit.jupiter.version>
     <assertj-core.version>3.9.1</assertj-core.version>
     <mockito-core.version>3.3.3</mockito-core.version>
+    <jaxb2-maven-plugin.version>2.5.0</jaxb2-maven-plugin.version>
+    <jaxb-runtime.version>2.3.1</jaxb-runtime.version>
     <jackson-databind.version>2.11.0</jackson-databind.version>
     <jackson-datatype-jsr310.version>2.11.2</jackson-datatype-jsr310.version>
     <json.version>20200518</json.version>
@@ -42,10 +46,7 @@
     <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
     <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
     <spring-ws-test.version>2.0.2.RELEASE</spring-ws-test.version>
-    <jaxb2-maven-plugin.version>2.5.0</jaxb2-maven-plugin.version>
-    <jaxb-runtime.version>2.3.1</jaxb-runtime.version>
     <postgresql.version>42.2.14</postgresql.version>
-    <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
     <javax.el.version>3.0.1-b11</javax.el.version>
   </properties>
 
@@ -74,6 +75,11 @@
       <version>${spring-boot-starter-security.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>${lombok.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>wsdl4j</groupId>
