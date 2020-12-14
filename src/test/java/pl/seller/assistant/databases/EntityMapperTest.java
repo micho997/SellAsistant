@@ -44,7 +44,8 @@ class EntityMapperTest {
     exampleImageId = 5L;
     exampleCommodityIds = Arrays.asList(1L, 2L, 3L, 4L, 5L);
     Commodity commodity = carlinSword();
-    exampleImageEntity = new ImagesEntity(toBlob(commodity.getImages()));
+    exampleImageEntity = ImagesEntity.builder()
+        .images(toBlob(commodity.getImages())).build();
     exampleCommodityEntities = Collections.singletonList(entity(commodity, exampleImageEntity));
   }
 

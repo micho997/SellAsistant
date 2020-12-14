@@ -32,7 +32,8 @@ public class CommodityService {
 
   @Transactional
   public CommodityEntity save(Commodity commodity) {
-    return commoditiesRepository.save(toEntity(commodity, imagesRepository.save(new ImagesEntity(toBlob(commodity.getImages())))));
+    return commoditiesRepository.save(toEntity(commodity, imagesRepository.save((ImagesEntity.builder()
+        .images(toBlob(commodity.getImages()))).build())));
   }
 
   @Transactional

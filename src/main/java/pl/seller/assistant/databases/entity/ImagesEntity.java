@@ -1,5 +1,11 @@
 package pl.seller.assistant.databases.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.sql.Blob;
 import java.util.List;
 import javax.persistence.Column;
@@ -12,6 +18,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "images")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ImagesEntity {
 
   @Id
@@ -20,27 +31,4 @@ public class ImagesEntity {
   @Column
   @ElementCollection(targetClass = Blob.class)
   private List<Blob> images;
-
-  ImagesEntity() {
-  }
-
-  public ImagesEntity(List<Blob> images) {
-    this.images = images;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public List<Blob> getImages() {
-    return images;
-  }
-
-  public void setImages(List<Blob> images) {
-    this.images = images;
-  }
 }
