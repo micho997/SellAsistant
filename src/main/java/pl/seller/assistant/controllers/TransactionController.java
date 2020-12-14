@@ -39,14 +39,13 @@ public class TransactionController {
 
   @PostMapping
   public ResponseEntity<TransactionDto> create(@RequestBody Transaction transaction) {
-    TransactionDto transactionDto = transactionService.save(transaction);
+    TransactionDto savedTransaction = transactionService.save(transaction);
     URI location = ServletUriComponentsBuilder
-        .fromCurrentRequest()
+        .fromCurrentContextPath()
         .path("/{id}")
-        .buildAndExpand(transactionDto.getId())
+        .buildAndExpand(savedTransaction.getId())
         .toUri();
 
-    return ResponseEntity.created(location).body(transactionDto);
+    return ResponseEntity.created(location).body(savedTransaction);
   }
 }
-
