@@ -1,23 +1,37 @@
-package pl.seller.assistant.services.summary;
+package pl.seller.assistant.services;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyCollection;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.seller.assistant.databases.SummaryRepository;
+import pl.seller.assistant.databases.entity.SummaryEntity;
 import pl.seller.assistant.models.Commodity;
 import pl.seller.assistant.models.Transaction;
 import pl.seller.assistant.mother.CommodityMother;
-import pl.seller.assistant.services.TransactionService;
+import pl.seller.assistant.mother.SameObjectChecker;
 
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,6 +42,17 @@ public class SummaryServiceTest {
   private SummaryService summaryService;
   @Autowired
   private TransactionService transactionService;
+
+  @Mock
+  private SummaryEntity summaryEntityMock;
+  @Mock
+  private SummaryRepository summaryRepositoryMock;
+  @InjectMocks
+  private SummaryService summaryServiceMock;
+
+  private static final String TEST_USERNAME = "TEST_USER";
+  private static final int EXAMPLE_YEAR = 2020;
+  private static final Month EXAMPLE_MONTH = Month.of(10);
 
   private final int transactionYear = 2020;
   private final int transactionMonth = 10;
@@ -40,10 +65,52 @@ public class SummaryServiceTest {
     createTransactions();
 
     // when
-    Summary summary = summaryService.makeMonthlySummary(transactionYear, Month.of(transactionMonth));
+    SummaryEntity summaryResult = summaryService.makeMonthlySummary(transactionYear, Month.of(transactionMonth), TEST_USERNAME);
 
     // then
-    System.out.println("Done!");
+    assertEquals(Month.of(transactionMonth).toString() + transactionYear, summaryResult.getMonthOfYear());
+    assertEquals(TEST_USERNAME, summaryResult.getOwner());
+    assertEquals(BigDecimal.valueOf(3500).setScale(2, RoundingMode.CEILING), summaryResult.getProfit());
+    assertEquals(BigDecimal.valueOf(1000).setScale(2, RoundingMode.CEILING), summaryResult.getCost());
+    assertEquals(BigDecimal.valueOf(2500).setScale(2, RoundingMode.CEILING), summaryResult.getProfitMinusCost());
+    assertEquals(10, summaryResult.getBoughtCommodities());
+    assertEquals(5, summaryResult.getSoldCommodities());
+    assertEquals("Nike", summaryResult.getMostPopularProducer());
+    assertNotNull(summaryResult.getCommodityWithHighestPriceId());
+    assertNotNull(summaryResult.getCommodityWithHighestProfitId());
+    assertEquals(LocalDate.of(2020, 10, 29), summaryResult.getLastTransactionDate());
+  }
+
+  @Test
+  public void should_save_monthly_summary() {
+    // given
+    createTransactions();
+    SummaryEntity summaryResult = summaryService.makeMonthlySummary(transactionYear, Month.of(transactionMonth), TEST_USERNAME);
+
+    // when
+    Optional<SummaryEntity> summaryFromDatabase = summaryService.getByIdAndOwner(summaryResult.getMonthOfYear(), TEST_USERNAME);
+
+    // then
+    assertTrue(summaryFromDatabase.isPresent());
+    SameObjectChecker.equalSummariesEntity(summaryResult, summaryFromDatabase.get());
+  }
+
+  @Test
+  public void should_return_empty_if_summary_not_exists() {
+    assertEquals(Optional.empty(), summaryService.getByIdAndOwner("Incorrect", "Incorrect"));
+  }
+
+  @Test
+  public void should_return_correct_summary() {
+    // given
+    when(summaryRepositoryMock.findAllById(Collections.singletonList(anyString()))).thenReturn(Collections.singletonList(summaryEntityMock));
+
+    // when
+    Optional<SummaryEntity> result = summaryServiceMock.getByDateAndOwner(EXAMPLE_YEAR, EXAMPLE_MONTH, TEST_USERNAME);
+
+    // then
+    verify(summaryRepositoryMock).findAllById(anyCollection());
+    assertEquals(Optional.empty(), result);
   }
 
   private void createTransactions() {
@@ -137,5 +204,4 @@ public class SummaryServiceTest {
   private Commodity commodity10() {
     return createCommodity("Apple", samePrice, exampleImage);
   }
-
 }

@@ -1,6 +1,5 @@
 package pl.seller.assistant.services;
 
-import static pl.seller.assistant.databases.EntityMapper.toBlob;
 import static pl.seller.assistant.databases.EntityMapper.toEntity;
 
 import org.springframework.stereotype.Service;
@@ -32,8 +31,8 @@ public class CommodityService {
 
   @Transactional
   public CommodityEntity save(Commodity commodity) {
-    return commoditiesRepository.save(toEntity(commodity, imagesRepository.save((ImagesEntity.builder()
-        .images(toBlob(commodity.getImages()))).build())));
+    ImagesEntity imagesEntities = imagesRepository.save(toEntity(commodity.getImages()));
+    return commoditiesRepository.save(toEntity(commodity, imagesEntities));
   }
 
   @Transactional

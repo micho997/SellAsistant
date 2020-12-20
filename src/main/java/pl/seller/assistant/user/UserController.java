@@ -5,17 +5,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import pl.seller.assistant.user.repository.UserEntity;
-import pl.seller.assistant.user.repository.UserRepository;
 
 @Controller
 public class UserController {
 
   private final UserService userService;
-  private final UserRepository userRepository;
 
-  public UserController(UserService userService, UserRepository userRepository) {
+  public UserController(UserService userService) {
     this.userService = userService;
-    this.userRepository = userRepository;
   }
 
   @GetMapping("/sing-up")

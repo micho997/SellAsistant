@@ -24,4 +24,5 @@ public class Summary {
   private CommodityDto commodityHighestPrice;
   private CommodityDto highestProfit;
   private LocalDate lastTransactionDate;
+  private String mountOfYear;
 }

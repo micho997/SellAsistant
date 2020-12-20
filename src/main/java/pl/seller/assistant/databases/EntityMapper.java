@@ -2,11 +2,13 @@ package pl.seller.assistant.databases;
 
 import pl.seller.assistant.databases.entity.CommodityEntity;
 import pl.seller.assistant.databases.entity.ImagesEntity;
+import pl.seller.assistant.databases.entity.SummaryEntity;
 import pl.seller.assistant.databases.entity.TransactionEntity;
 import pl.seller.assistant.models.Commodity;
 import pl.seller.assistant.models.CommodityDto;
 import pl.seller.assistant.models.Transaction;
 import pl.seller.assistant.models.TransactionDto;
+import pl.seller.assistant.services.summary.Summary;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -57,8 +59,29 @@ public class EntityMapper {
         .commodities(commodityEntities).build();
   }
 
+  public static ImagesEntity toEntity(List<BufferedImage> images) {
+    return ImagesEntity.builder()
+        .images(toBlob(images)).build();
+  }
+
+  public static SummaryEntity toEntity(Summary summary, String owner) {
+    return SummaryEntity.builder()
+        .monthOfYear(summary.getMountOfYear())
+        .owner(owner)
+        .profit(summary.getProfit())
+        .cost(summary.getCost())
+        .profitMinusCost(summary.getProfitMinusCost())
+        .boughtCommodities(summary.getBoughtCommodities())
+        .soldCommodities(summary.getSoldCommodities())
+        .mostPopularProducer(summary.getMostPopularProducer())
+        .commodityWithHighestPriceId(summary.getCommodityHighestPrice().getId())
+        .commodityWithHighestProfitId(summary.getHighestProfit().getId())
+        .lastTransactionDate(summary.getLastTransactionDate()).build();
+  }
+
   public static CommodityDto toDto(CommodityEntity entity) {
     return CommodityDto.builder()
+        .id(entity.getId())
         .producer(entity.getProducer())
         .price(entity.getPrice().setScale(2, RoundingMode.CEILING))
         .currentPrice(entity.getCurrentPrice())
