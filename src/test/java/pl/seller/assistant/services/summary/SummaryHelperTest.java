@@ -93,11 +93,11 @@ public class SummaryHelperTest {
   @Test
   public void should_count_bought_items() {
     // given
-    List<TransactionDto> transactions = getExampleTransactionsDtoList();
+    List<CommodityDto> commodities = getExampleCommoditiesDtoList();
     int expectedCommoditiesInStock = 5;
 
     // when
-    int resultSumOfCommoditiesInStock = summaryHelper.countBoughtCommodities(transactions);
+    int resultSumOfCommoditiesInStock = summaryHelper.countBoughtCommodities(commodities);
 
     // then
     assertEquals(expectedCommoditiesInStock, resultSumOfCommoditiesInStock);
@@ -138,7 +138,7 @@ public class SummaryHelperTest {
     commodities.add(commodityWithHighestPrice);
 
     // when
-    CommodityDto resultCommodityWithHighestPrice = summaryHelper.getHighestPrice(commodities);
+    CommodityDto resultCommodityWithHighestPrice = summaryHelper.getCommodityWithHighestPrice(commodities);
 
     // then
     assertEquals(commodityWithHighestPrice, resultCommodityWithHighestPrice);
@@ -155,7 +155,7 @@ public class SummaryHelperTest {
     commodities.add(commodityWithHighestProfit);
 
     // when
-    CommodityDto resultCommodityWithHighestProfit = summaryHelper.getHighestProfit(commodities);
+    CommodityDto resultCommodityWithHighestProfit = summaryHelper.getCommodityWithHighestProfit(commodities);
 
     // then
     assertEquals(commodityWithHighestProfit, resultCommodityWithHighestProfit);
@@ -168,10 +168,10 @@ public class SummaryHelperTest {
     LocalDate expectedDate = LocalDate.of(2020, 12, 2);
 
     // when
-    LocalDate resultDate = summaryHelper.findLastTransactionDate(transactions);
+    TransactionDto resultTransactionDto = summaryHelper.findLastTransactionDate(transactions);
 
     // then
-    assertEquals(expectedDate, resultDate);
+    assertEquals(expectedDate, resultTransactionDto.getDate());
   }
 
   private List<TransactionDto> getExampleTransactionsDtoList() {

@@ -2,6 +2,7 @@ package pl.seller.assistant.services;
 
 import static pl.seller.assistant.databases.EntityMapper.toEntity;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.seller.assistant.databases.CommoditiesRepository;
@@ -13,21 +14,16 @@ import pl.seller.assistant.models.Commodity;
 import pl.seller.assistant.models.CommodityDto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class CommodityService {
 
   private final CommoditiesRepository commoditiesRepository;
   private final ImagesRepository imagesRepository;
-
-  public CommodityService(CommoditiesRepository commoditiesRepository, ImagesRepository imagesRepository) {
-    this.commoditiesRepository = commoditiesRepository;
-    this.imagesRepository = imagesRepository;
-  }
 
   @Transactional
   public CommodityEntity save(Commodity commodity) {
@@ -41,31 +37,18 @@ public class CommodityService {
     return commodityEntity.map(EntityMapper::toDto);
   }
 
-  public List<CommodityDto> getAll() {
+  public List<CommodityDto> getByGotTime(LocalDate from, LocalDate to) {
     return commoditiesRepository.findAll().stream()
+        .filter(commodity -> commodity.getGotTime().isAfter(from) && commodity.getGotTime().isBefore(to))
         .map(EntityMapper::toDto)
         .collect(Collectors.toList());
   }
 
-  public List<CommodityDto> getByGotTime(LocalDate from, LocalDate to) {
-    List<CommodityDto> result = new ArrayList<>();
-    for (CommodityDto commodityDto : getAll()) {
-      if (commodityDto.getGotTime().isAfter(from) && commodityDto.getGotTime().isBefore(to)) {
-        result.add(commodityDto);
-      }
-    }
-    return result;
-  }
-
   public List<CommodityDto> getBySoldTime(LocalDate from, LocalDate to) {
-    List<CommodityDto> result = new ArrayList<>();
-    for (CommodityDto commodityDto : getAll()) {
-      if (commodityDto.getSoldTime() != null) {
-        if (commodityDto.getSoldTime().isAfter(from) && commodityDto.getSoldTime().isBefore(to)) {
-          result.add(commodityDto);
-        }
-      }
-    }
-    return result;
+    return commoditiesRepository.findAll().stream()
+        .filter(commodity -> commodity.getSoldTime() != null)
+        .filter(commodity -> commodity.getSoldTime().isAfter(from) && commodity.getSoldTime().isBefore(to))
+        .map(EntityMapper::toDto)
+        .collect(Collectors.toList());
   }
 }

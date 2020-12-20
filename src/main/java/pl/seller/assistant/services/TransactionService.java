@@ -3,6 +3,7 @@ package pl.seller.assistant.services;
 import static pl.seller.assistant.databases.EntityMapper.toDto;
 import static pl.seller.assistant.databases.EntityMapper.toEntity;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.seller.assistant.databases.EntityMapper;
@@ -18,15 +19,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class TransactionService {
 
   private final TransactionsRepository transactionsRepository;
   private final CommodityService commodityService;
-
-  public TransactionService(TransactionsRepository transactionsRepository, CommodityService commodityService) {
-    this.transactionsRepository = transactionsRepository;
-    this.commodityService = commodityService;
-  }
 
   @Transactional
   public TransactionDto save(Transaction transaction) {

@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import pl.seller.assistant.models.CommodityDto;
+import pl.seller.assistant.models.TransactionDto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -21,8 +21,8 @@ public class Summary {
   private int boughtCommodities;
   private int soldCommodities;
   private String mostPopularProducer;
-  private CommodityDto commodityHighestPrice;
-  private CommodityDto highestProfit;
-  private LocalDate lastTransactionDate;
+  private CommodityDto commodityWithHighestPrice;
+  private CommodityDto commodityWithHighestProfit;
+  private TransactionDto lastTransactionDate;
   private String mountOfYear;
 }

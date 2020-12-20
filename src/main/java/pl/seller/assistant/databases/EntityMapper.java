@@ -74,9 +74,9 @@ public class EntityMapper {
         .boughtCommodities(summary.getBoughtCommodities())
         .soldCommodities(summary.getSoldCommodities())
         .mostPopularProducer(summary.getMostPopularProducer())
-        .commodityWithHighestPriceId(summary.getCommodityHighestPrice().getId())
-        .commodityWithHighestProfitId(summary.getHighestProfit().getId())
-        .lastTransactionDate(summary.getLastTransactionDate()).build();
+        .commodityWithHighestPriceId(summary.getCommodityWithHighestPrice().getId())
+        .commodityWithHighestProfitId(summary.getCommodityWithHighestProfit().getId())
+        .lastTransactionDateId(summary.getLastTransactionDate().getId()).build();
   }
 
   public static CommodityDto toDto(CommodityEntity entity) {

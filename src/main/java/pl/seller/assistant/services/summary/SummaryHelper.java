@@ -5,7 +5,8 @@ import pl.seller.assistant.models.CommodityDto;
 import pl.seller.assistant.models.TransactionDto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +31,8 @@ public class SummaryHelper {
     return calculateProfit(transactions).subtract(calculateCost(transactions));
   }
 
-  public int countBoughtCommodities(List<TransactionDto> transactions) {
-    return transactions.stream()
-        .map(TransactionDto::getCommodityIds)
-        .map(List::size)
-        .reduce(0, Integer::sum);
+  public int countBoughtCommodities(List<CommodityDto> commodities) {
+    return commodities.size();
   }
 
   public int countSoldCommodities(List<CommodityDto> commodities) {
@@ -43,6 +41,7 @@ public class SummaryHelper {
         .count());
   }
 
+  @SuppressWarnings({"OptionalGetWithoutIsPresent", "ComparatorMethodParameterNotUsed"})
   public String findMostPopularProducer(List<CommodityDto> commodities) {
     Map<String, Integer> result = new HashMap<>();
 
@@ -56,35 +55,15 @@ public class SummaryHelper {
     return result.entrySet().stream().max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
   }
 
-  public CommodityDto getHighestPrice(List<CommodityDto> commodities) {
-    int index = -1;
-    BigDecimal highestPrice = BigDecimal.ZERO;
-    for (int i = 0; i < commodities.size(); i++) {
-      if (commodities.get(i).getPrice().compareTo(highestPrice) > 0) {
-        index = i;
-        highestPrice = commodities.get(i).getCurrentPrice();
-      }
-    }
-    return commodities.get(index);
+  public CommodityDto getCommodityWithHighestPrice(List<CommodityDto> commodities) {
+    return Collections.max(commodities, Comparator.comparing(CommodityDto::getPrice));
   }
 
-  public CommodityDto getHighestProfit(List<CommodityDto> commodities) {
-    BigDecimal highestProfit = BigDecimal.ZERO;
-    int index = -1;
-    for (int i = 0; i < commodities.size(); i++) {
-      if (commodities.get(i).getSoldTime() != null) {
-        if (commodities.get(i).getCurrentPrice().subtract(commodities.get(i).getPrice()).compareTo(highestProfit) > 0) {
-          index = i;
-          highestProfit = commodities.get(i).getCurrentPrice().subtract(commodities.get(i).getPrice());
-        }
-      }
-    }
-    return commodities.get(index);
+  public CommodityDto getCommodityWithHighestProfit(List<CommodityDto> commodities) {
+    return Collections.max(commodities, Comparator.comparing(CommodityDto::getCurrentPrice));
   }
 
-  public LocalDate findLastTransactionDate(List<TransactionDto> transaction) {
-    return transaction.stream()
-        .map(TransactionDto::getDate)
-        .max(LocalDate::compareTo).orElseThrow();
+  public TransactionDto findLastTransactionDate(List<TransactionDto> transactions) {
+    return Collections.max(transactions, Comparator.comparing(TransactionDto::getDate));
   }
 }

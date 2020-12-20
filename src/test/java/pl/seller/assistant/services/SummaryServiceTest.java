@@ -22,7 +22,6 @@ import pl.seller.assistant.databases.entity.SummaryEntity;
 import pl.seller.assistant.models.Commodity;
 import pl.seller.assistant.models.Transaction;
 import pl.seller.assistant.mother.CommodityMother;
-import pl.seller.assistant.mother.SameObjectChecker;
 
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
@@ -78,7 +77,7 @@ public class SummaryServiceTest {
     assertEquals("Nike", summaryResult.getMostPopularProducer());
     assertNotNull(summaryResult.getCommodityWithHighestPriceId());
     assertNotNull(summaryResult.getCommodityWithHighestProfitId());
-    assertEquals(LocalDate.of(2020, 10, 29), summaryResult.getLastTransactionDate());
+    assertNotNull(summaryResult.getLastTransactionDateId());
   }
 
   @Test
@@ -92,7 +91,17 @@ public class SummaryServiceTest {
 
     // then
     assertTrue(summaryFromDatabase.isPresent());
-    SameObjectChecker.equalSummariesEntity(summaryResult, summaryFromDatabase.get());
+    assertEquals(summaryResult.getMonthOfYear(), summaryFromDatabase.get().getMonthOfYear());
+    assertEquals(summaryResult.getOwner(), summaryFromDatabase.get().getOwner());
+    assertEquals(summaryResult.getProfit(), summaryFromDatabase.get().getProfit());
+    assertEquals(summaryResult.getCost(), summaryFromDatabase.get().getCost());
+    assertEquals(summaryResult.getProfitMinusCost(), summaryFromDatabase.get().getProfitMinusCost());
+    assertEquals(summaryResult.getBoughtCommodities(), summaryFromDatabase.get().getBoughtCommodities());
+    assertEquals(summaryResult.getSoldCommodities(), summaryFromDatabase.get().getSoldCommodities());
+    assertEquals(summaryResult.getMostPopularProducer(), summaryFromDatabase.get().getMostPopularProducer());
+    assertEquals(summaryResult.getCommodityWithHighestPriceId(), summaryFromDatabase.get().getCommodityWithHighestPriceId());
+    assertEquals(summaryResult.getCommodityWithHighestProfitId(), summaryFromDatabase.get().getCommodityWithHighestProfitId());
+    assertEquals(summaryResult.getLastTransactionDateId(), summaryFromDatabase.get().getLastTransactionDateId());
   }
 
   @Test
