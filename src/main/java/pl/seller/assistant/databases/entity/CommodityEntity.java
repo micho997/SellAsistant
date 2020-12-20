@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.persistence.Column;
@@ -22,7 +23,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CommodityEntity {
+public class CommodityEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

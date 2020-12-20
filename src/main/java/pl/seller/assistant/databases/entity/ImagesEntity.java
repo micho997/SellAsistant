@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Blob;
 import java.util.List;
 import javax.persistence.Column;
@@ -21,7 +22,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ImagesEntity {
+public class ImagesEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

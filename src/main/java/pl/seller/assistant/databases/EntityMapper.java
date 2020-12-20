@@ -48,7 +48,7 @@ public class EntityMapper {
         .date(transaction.getDate())
         .price(transaction.getPrice().setScale(2, RoundingMode.CEILING))
         .earned(transaction.getEarned())
-        .commodities(commodityEntities).build();
+        .commodityIds(commodityEntities).build();
   }
 
   public static TransactionEntity toEntity(TransactionDto transactionDto, List<CommodityEntity> commodityEntities) {
@@ -56,7 +56,7 @@ public class EntityMapper {
         .date(transactionDto.getDate())
         .price(transactionDto.getPrice().setScale(2, RoundingMode.CEILING))
         .earned(transactionDto.getEarned())
-        .commodities(commodityEntities).build();
+        .commodityIds(commodityEntities).build();
   }
 
   public static ImagesEntity toEntity(List<BufferedImage> images) {
@@ -96,7 +96,7 @@ public class EntityMapper {
         .date(entity.getDate())
         .price(entity.getPrice().setScale(2, RoundingMode.CEILING))
         .earned(entity.getEarned())
-        .commodityIds(entity.getCommodities().stream()
+        .commodityIds(entity.getCommodityIds().stream()
             .map(CommodityEntity::getId)
             .collect(Collectors.toList())).build();
   }

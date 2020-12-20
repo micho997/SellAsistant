@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,7 +24,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TransactionEntity {
+public class TransactionEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,5 +36,5 @@ public class TransactionEntity {
   @Column(nullable = false)
   private BigDecimal earned;
   @OneToMany(fetch = FetchType.EAGER)
-  private List<CommodityEntity> commodities;
+  private List<CommodityEntity> commodityIds;
 }

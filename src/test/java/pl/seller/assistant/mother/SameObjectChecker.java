@@ -20,7 +20,7 @@ public class SameObjectChecker {
     assertEquals(transactionDto.getDate(), transactionEntity.getDate());
     assertEquals(transactionDto.getPrice(), transactionEntity.getPrice());
     assertEquals(transactionDto.getEarned(), transactionEntity.getEarned());
-    assertNotNull(transactionEntity.getCommodities());
+    assertNotNull(transactionEntity.getCommodityIds());
     assertNotNull(transactionDto.getCommodityIds());
   }
 
@@ -28,7 +28,7 @@ public class SameObjectChecker {
     assertEquals(transaction.getDate(), transactionEntity.getDate());
     assertEquals(transaction.getPrice(), transactionEntity.getPrice());
     assertEquals(transaction.getEarned(), transactionEntity.getEarned());
-    assertEquals(transaction.getCommodities().size(), transactionEntity.getCommodities().size());
+    assertEquals(transaction.getCommodities().size(), transactionEntity.getCommodityIds().size());
   }
 
   public static void equalTransactionTransactionDto(Transaction transaction, TransactionDto transactionDto) {

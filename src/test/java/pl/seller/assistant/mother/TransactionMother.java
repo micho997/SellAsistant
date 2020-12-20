@@ -41,6 +41,6 @@ public class TransactionMother {
         .date(transaction.getDate())
         .price(transaction.getPrice())
         .earned(transaction.getEarned())
-        .commodities(commodityEntities).build();
+        .commodityIds(commodityEntities).build();
   }
 }
