@@ -1,5 +1,6 @@
 package pl.seller.assistant.controllers;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +17,11 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/transactions")
 public class TransactionController {
 
   private final TransactionService transactionService;
-
-  public TransactionController(TransactionService transactionService) {
-    this.transactionService = transactionService;
-  }
 
   @GetMapping
   public ResponseEntity<List<TransactionDto>> getAll() {

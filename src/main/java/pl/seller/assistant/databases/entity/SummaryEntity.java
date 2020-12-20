@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -40,5 +39,5 @@ public class SummaryEntity {
   @Column(name = "commodity_with_highest_profit")
   private Long commodityWithHighestProfitId;
   @Column(name = "last_transaction_date")
-  private LocalDate lastTransactionDate;
+  private Long lastTransactionDateId;
 }

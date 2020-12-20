@@ -1,5 +1,6 @@
 package pl.seller.assistant.config;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.seller.assistant.user.MyUserDetailsService;
 
 @Configuration
+@AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
@@ -18,10 +20,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   private final MyUserDetailsService userDetailsService;
-
-  public WebSecurityConfig(MyUserDetailsService userDetailsService) {
-    this.userDetailsService = userDetailsService;
-  }
 
   @Override
   protected void configure(AuthenticationManagerBuilder managerBuilder) throws Exception {

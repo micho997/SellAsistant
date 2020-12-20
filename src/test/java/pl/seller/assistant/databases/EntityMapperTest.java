@@ -2,29 +2,35 @@ package pl.seller.assistant.databases;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static pl.seller.assistant.databases.EntityMapper.toBlob;
+import static pl.seller.assistant.databases.EntityMapper.toBufferedImage;
 import static pl.seller.assistant.databases.EntityMapper.toDto;
 import static pl.seller.assistant.databases.EntityMapper.toEntity;
 import static pl.seller.assistant.mother.CommodityMother.carlinSword;
 import static pl.seller.assistant.mother.CommodityMother.dto;
 import static pl.seller.assistant.mother.CommodityMother.entity;
+import static pl.seller.assistant.mother.CommodityMother.pugSocks;
 import static pl.seller.assistant.mother.SameObjectChecker.equalCommodityCommodityEntity;
 import static pl.seller.assistant.mother.SameObjectChecker.equalCommodityDtoCommodityEntity;
+import static pl.seller.assistant.mother.SameObjectChecker.equalSummarySummaryEntity;
 import static pl.seller.assistant.mother.SameObjectChecker.equalTransactionDtoTransactionEntity;
 import static pl.seller.assistant.mother.SameObjectChecker.equalTransactionTransactionEntity;
+import static pl.seller.assistant.mother.SummaryMother.exampleSummary;
 import static pl.seller.assistant.mother.TransactionMother.dto;
+import static pl.seller.assistant.mother.TransactionMother.entity;
 import static pl.seller.assistant.mother.TransactionMother.exampleTransaction;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.seller.assistant.databases.entity.CommodityEntity;
 import pl.seller.assistant.databases.entity.ImagesEntity;
+import pl.seller.assistant.databases.entity.SummaryEntity;
 import pl.seller.assistant.databases.entity.TransactionEntity;
 import pl.seller.assistant.models.Commodity;
 import pl.seller.assistant.models.CommodityDto;
 import pl.seller.assistant.models.Transaction;
 import pl.seller.assistant.models.TransactionDto;
 import pl.seller.assistant.mother.CommodityMother;
-import pl.seller.assistant.mother.TransactionMother;
+import pl.seller.assistant.services.summary.Summary;
 
 import java.awt.image.BufferedImage;
 import java.sql.Blob;
@@ -33,6 +39,8 @@ import java.util.Collections;
 import java.util.List;
 
 class EntityMapperTest {
+
+  private static final String EXAMPLE_OWNER = "TEST_USER";
 
   private List<CommodityEntity> exampleCommodityEntities;
   private ImagesEntity exampleImageEntity;
@@ -100,6 +108,30 @@ class EntityMapperTest {
   }
 
   @Test
+  void should_convert_bufferedImages_to_imageEntity() {
+    // given
+    List<BufferedImage> images = pugSocks().getImages();
+
+    // when
+    ImagesEntity imagesEntity = toEntity(images);
+
+    // then
+    assertEquals(images.size(), imagesEntity.getImages().size());
+  }
+
+  @Test
+  void should_convert_summary_to_summaryEntity() {
+    // given
+    Summary summary = exampleSummary();
+
+    // when
+    SummaryEntity summaryEntity = toEntity(summary, EXAMPLE_OWNER);
+
+    // then
+    equalSummarySummaryEntity(summary, summaryEntity);
+  }
+
+  @Test
   void should_convert_commodityEntity_to_commodityDto() {
     // given
     CommodityEntity commodityEntity = entity(carlinSword(), exampleImageEntity);
@@ -114,7 +146,7 @@ class EntityMapperTest {
   @Test
   void should_convert_transactionEntity_to_transactionDto() {
     // given
-    TransactionEntity transactionEntity = TransactionMother.entity(exampleTransaction(), exampleCommodityEntities);
+    TransactionEntity transactionEntity = entity(exampleTransaction(), exampleCommodityEntities);
 
     // when
     TransactionDto transactionDto = toDto(transactionEntity);
@@ -129,10 +161,10 @@ class EntityMapperTest {
     BufferedImage bufferedImage = carlinSword().getImages().get(0);
 
     // when
-    List<Blob> blob = EntityMapper.toBlob(Collections.singletonList(bufferedImage));
+    List<Blob> blob = toBlob(Collections.singletonList(bufferedImage));
 
     // then
     assertEquals(1, blob.size());
-    assertEquals(1, EntityMapper.toBufferedImage(blob).size());
+    assertEquals(1, toBufferedImage(blob).size());
   }
 }

@@ -11,6 +11,7 @@ import pl.seller.assistant.models.Commodity;
 import pl.seller.assistant.models.CommodityDto;
 import pl.seller.assistant.models.Transaction;
 import pl.seller.assistant.models.TransactionDto;
+import pl.seller.assistant.services.summary.Summary;
 
 public class SameObjectChecker {
 
@@ -57,17 +58,16 @@ public class SameObjectChecker {
     );
   }
 
-  public static void equalSummariesEntity(SummaryEntity summaryEntity1, SummaryEntity summaryEntity2) {
-    assertEquals(summaryEntity1.getMonthOfYear(), summaryEntity2.getMonthOfYear());
-    assertEquals(summaryEntity1.getOwner(), summaryEntity2.getOwner());
-    assertEquals(summaryEntity1.getProfit(), summaryEntity2.getProfit());
-    assertEquals(summaryEntity1.getCost(), summaryEntity2.getCost());
-    assertEquals(summaryEntity1.getProfitMinusCost(), summaryEntity2.getProfitMinusCost());
-    assertEquals(summaryEntity1.getBoughtCommodities(), summaryEntity2.getBoughtCommodities());
-    assertEquals(summaryEntity1.getSoldCommodities(), summaryEntity2.getSoldCommodities());
-    assertEquals(summaryEntity1.getMostPopularProducer(), summaryEntity2.getMostPopularProducer());
-    assertEquals(summaryEntity1.getCommodityWithHighestPriceId(), summaryEntity2.getCommodityWithHighestPriceId());
-    assertEquals(summaryEntity1.getCommodityWithHighestProfitId(), summaryEntity2.getCommodityWithHighestProfitId());
-    assertEquals(summaryEntity1.getLastTransactionDate(), summaryEntity2.getLastTransactionDate());
+  public static void equalSummarySummaryEntity(Summary summary, SummaryEntity summaryEntity) {
+    assertEquals(summary.getProfit(), summaryEntity.getProfit());
+    assertEquals(summary.getCost(), summaryEntity.getCost());
+    assertEquals(summary.getProfitMinusCost(), summaryEntity.getProfitMinusCost());
+    assertEquals(summary.getBoughtCommodities(), summaryEntity.getBoughtCommodities());
+    assertEquals(summary.getSoldCommodities(), summaryEntity.getSoldCommodities());
+    assertEquals(summary.getMostPopularProducer(), summaryEntity.getMostPopularProducer());
+    assertEquals(summary.getCommodityWithHighestPrice().getId(), summaryEntity.getCommodityWithHighestPriceId());
+    assertEquals(summary.getCommodityWithHighestProfit().getId(), summaryEntity.getCommodityWithHighestProfitId());
+    assertEquals(summary.getLastTransactionDate().getId(), summaryEntity.getLastTransactionDateId());
+    assertEquals(summary.getMountOfYear(), summaryEntity.getMonthOfYear());
   }
 }
