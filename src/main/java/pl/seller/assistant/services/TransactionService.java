@@ -11,6 +11,8 @@ import pl.seller.assistant.databases.entity.CommodityEntity;
 import pl.seller.assistant.models.Transaction;
 import pl.seller.assistant.models.TransactionDto;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,5 +46,15 @@ public class TransactionService {
     return transactionsRepository.findAll().stream()
         .map(EntityMapper::toDto)
         .collect(Collectors.toList());
+  }
+
+  public List<TransactionDto> getByDate(LocalDate from, LocalDate to) {
+    List<TransactionDto> result = new ArrayList<>();
+    for (TransactionDto transactionDto : getAll()) {
+      if (transactionDto.getDate().isAfter(from) && transactionDto.getDate().isBefore(to)) {
+        result.add(transactionDto);
+      }
+    }
+    return result;
   }
 }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.springframework.transaction.annotation.Transactional;
 import pl.seller.assistant.databases.entity.CommodityEntity;
+import pl.seller.assistant.databases.entity.SummaryEntity;
 import pl.seller.assistant.databases.entity.TransactionEntity;
 import pl.seller.assistant.models.Commodity;
 import pl.seller.assistant.models.CommodityDto;
@@ -54,5 +55,19 @@ public class SameObjectChecker {
     assertEquals(commodityDto.getSoldTime(), commodityEntity.getSoldTime());
     assertNotNull(commodityEntity.getImageId()
     );
+  }
+
+  public static void equalSummariesEntity(SummaryEntity summaryEntity1, SummaryEntity summaryEntity2) {
+    assertEquals(summaryEntity1.getMonthOfYear(), summaryEntity2.getMonthOfYear());
+    assertEquals(summaryEntity1.getOwner(), summaryEntity2.getOwner());
+    assertEquals(summaryEntity1.getProfit(), summaryEntity2.getProfit());
+    assertEquals(summaryEntity1.getCost(), summaryEntity2.getCost());
+    assertEquals(summaryEntity1.getProfitMinusCost(), summaryEntity2.getProfitMinusCost());
+    assertEquals(summaryEntity1.getBoughtCommodities(), summaryEntity2.getBoughtCommodities());
+    assertEquals(summaryEntity1.getSoldCommodities(), summaryEntity2.getSoldCommodities());
+    assertEquals(summaryEntity1.getMostPopularProducer(), summaryEntity2.getMostPopularProducer());
+    assertEquals(summaryEntity1.getCommodityWithHighestPriceId(), summaryEntity2.getCommodityWithHighestPriceId());
+    assertEquals(summaryEntity1.getCommodityWithHighestProfitId(), summaryEntity2.getCommodityWithHighestProfitId());
+    assertEquals(summaryEntity1.getLastTransactionDate(), summaryEntity2.getLastTransactionDate());
   }
 }
