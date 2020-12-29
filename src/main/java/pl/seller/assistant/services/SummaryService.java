@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.seller.assistant.databases.EntityMapper;
 import pl.seller.assistant.databases.SummaryRepository;
+import pl.seller.assistant.databases.entity.CommodityEntity;
 import pl.seller.assistant.databases.entity.SummaryEntity;
+import pl.seller.assistant.databases.entity.TransactionEntity;
 import pl.seller.assistant.models.CommodityDto;
 import pl.seller.assistant.models.TransactionDto;
 import pl.seller.assistant.services.summary.Summary;
@@ -27,17 +29,27 @@ public class SummaryService {
   private final SummaryHelper summaryHelper;
   private final SummaryRepository summaryRepository;
 
-  public SummaryEntity makeMonthlySummary(int year, Month month, String owner) {
-    Summary summary = makeSummaryForDate(
-        LocalDate.of(year, month.minus(1), month.minus(1).maxLength()),
-        LocalDate.of(year, month.plus(1), 1));
-    setCurrentMonth(summary, createSummaryId(month, year));
+  public SummaryEntity getMonthlySummary(LocalDate monthOfYear, String owner) {
+    Optional<SummaryEntity> optionalSummaryEntity = getByIdAndOwner(createSummaryId(monthOfYear.getMonth(), monthOfYear.getYear()), owner);
+    return optionalSummaryEntity.orElseGet(() -> makeMonthlySummary(monthOfYear, owner));
+  }
+
+  public SummaryEntity makeMonthlySummary(LocalDate monthOfYear, String owner) {
+    Summary summary = makeSummaryForDate(owner,
+        LocalDate.of(monthOfYear.getYear(), monthOfYear.getMonth().minus(1), monthOfYear.getMonth().minus(1).maxLength()),
+        LocalDate.of(monthOfYear.getYear(), monthOfYear.getMonth().plus(1), 1));
+    setCurrentMonth(summary, createSummaryId(monthOfYear.getMonth(), monthOfYear.getYear()));
     return saveMonthlySummary(summary, owner);
   }
 
-  public Summary makeSummaryForDate(LocalDate from, LocalDate to) {
-    List<TransactionDto> transactions = transactionService.getByDate(from, to);
-    List<CommodityDto> commodities = getCommodities(transactions);
+  public Summary makeSummaryForDate(String username, LocalDate from, LocalDate to) {
+    List<TransactionEntity> transactionEntities = transactionService.getByDate(username, from, to);
+    List<TransactionDto> transactions = transactionEntities.stream()
+        .map(EntityMapper::toDto)
+        .collect(toList());
+    List<CommodityDto> commodities = getCommodities(transactionEntities).stream()
+        .map(EntityMapper::toDto)
+        .collect(toList());
     return createSummary(transactions, commodities);
   }
 
@@ -76,10 +88,11 @@ public class SummaryService {
     return month.toString() + year;
   }
 
-  private List<CommodityDto> getCommodities(List<TransactionDto> transactions) {
+  private List<CommodityEntity> getCommodities(List<TransactionEntity> transactions) {
     return transactions.stream()
-        .map(TransactionDto::getCommodityIds)
+        .map(TransactionEntity::getCommodityEntities)
         .flatMap(List::stream)
+        .map(CommodityEntity::getId)
         .map(commodityService::getById)
         .map(Optional::get)
         .collect(toList());

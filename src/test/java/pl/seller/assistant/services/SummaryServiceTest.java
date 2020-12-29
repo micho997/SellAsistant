@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static pl.seller.assistant.mother.ExampleData.EXAMPLE_USERNAME;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,9 +22,8 @@ import pl.seller.assistant.databases.SummaryRepository;
 import pl.seller.assistant.databases.entity.SummaryEntity;
 import pl.seller.assistant.models.Commodity;
 import pl.seller.assistant.models.Transaction;
-import pl.seller.assistant.mother.CommodityMother;
+import pl.seller.assistant.mother.ImageMother;
 
-import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -49,14 +49,11 @@ public class SummaryServiceTest {
   @InjectMocks
   private SummaryService summaryServiceMock;
 
-  private static final String TEST_USERNAME = "TEST_USER";
   private static final int EXAMPLE_YEAR = 2020;
   private static final Month EXAMPLE_MONTH = Month.of(10);
-
-  private final int transactionYear = 2020;
-  private final int transactionMonth = 10;
-  private final BigDecimal samePrice = BigDecimal.valueOf(100);
-  private final BufferedImage exampleImage = CommodityMother.carlinSword().getImages().get(0);
+  private static final LocalDate EXAMPLE_MONTH_OF_YEAR = LocalDate.of(2020, Month.OCTOBER, 1);
+  private static final BigDecimal OLD_PRICE = BigDecimal.valueOf(100);
+  private static final BigDecimal NEW_PRICE = BigDecimal.valueOf(300);
 
   @Test
   public void should_make_summary_for_date() {
@@ -64,11 +61,10 @@ public class SummaryServiceTest {
     createTransactions();
 
     // when
-    SummaryEntity summaryResult = summaryService.makeMonthlySummary(transactionYear, Month.of(transactionMonth), TEST_USERNAME);
+    SummaryEntity summaryResult = summaryService.makeMonthlySummary(EXAMPLE_MONTH_OF_YEAR, EXAMPLE_USERNAME);
 
     // then
-    assertEquals(Month.of(transactionMonth).toString() + transactionYear, summaryResult.getMonthOfYear());
-    assertEquals(TEST_USERNAME, summaryResult.getOwner());
+    assertEquals(EXAMPLE_USERNAME, summaryResult.getOwner());
     assertEquals(BigDecimal.valueOf(3500).setScale(2, RoundingMode.CEILING), summaryResult.getProfit());
     assertEquals(BigDecimal.valueOf(1000).setScale(2, RoundingMode.CEILING), summaryResult.getCost());
     assertEquals(BigDecimal.valueOf(2500).setScale(2, RoundingMode.CEILING), summaryResult.getProfitMinusCost());
@@ -84,10 +80,10 @@ public class SummaryServiceTest {
   public void should_save_monthly_summary() {
     // given
     createTransactions();
-    SummaryEntity summaryResult = summaryService.makeMonthlySummary(transactionYear, Month.of(transactionMonth), TEST_USERNAME);
+    SummaryEntity summaryResult = summaryService.makeMonthlySummary(EXAMPLE_MONTH_OF_YEAR, EXAMPLE_USERNAME);
 
     // when
-    Optional<SummaryEntity> summaryFromDatabase = summaryService.getByIdAndOwner(summaryResult.getMonthOfYear(), TEST_USERNAME);
+    Optional<SummaryEntity> summaryFromDatabase = summaryService.getByIdAndOwner(summaryResult.getMonthOfYear(), EXAMPLE_USERNAME);
 
     // then
     assertTrue(summaryFromDatabase.isPresent());
@@ -115,7 +111,7 @@ public class SummaryServiceTest {
     when(summaryRepositoryMock.findAllById(Collections.singletonList(anyString()))).thenReturn(Collections.singletonList(summaryEntityMock));
 
     // when
-    Optional<SummaryEntity> result = summaryServiceMock.getByDateAndOwner(EXAMPLE_YEAR, EXAMPLE_MONTH, TEST_USERNAME);
+    Optional<SummaryEntity> result = summaryServiceMock.getByDateAndOwner(EXAMPLE_YEAR, EXAMPLE_MONTH, EXAMPLE_USERNAME);
 
     // then
     verify(summaryRepositoryMock).findAllById(anyCollection());
@@ -123,32 +119,36 @@ public class SummaryServiceTest {
   }
 
   private void createTransactions() {
-    transactionService.save(get1Transaction());
-    transactionService.save(get2Transaction());
-    transactionService.save(get3Transaction());
-    transactionService.save(get4Transaction());
-    transactionService.save(get5Transaction());
+    saveTransaction(get1Transaction());
+    saveTransaction(get2Transaction());
+    saveTransaction(get3Transaction());
+    saveTransaction(get4Transaction());
+    saveTransaction(get5Transaction());
+  }
+
+  private void saveTransaction(Transaction transaction) {
+    transactionService.save(transaction, EXAMPLE_USERNAME);
   }
 
   private Transaction get1Transaction() {
     return createTransaction(commodity1(), commodity2(), BigDecimal.valueOf(500),
-        LocalDate.of(transactionYear, transactionMonth, 3));
+        LocalDate.of(EXAMPLE_YEAR, EXAMPLE_MONTH, 3));
   }
 
   private Transaction get2Transaction() {
-    return createTransaction(commodity3(), commodity4(), BigDecimal.valueOf(600), LocalDate.of(transactionYear, transactionMonth, 5));
+    return createTransaction(commodity3(), commodity4(), BigDecimal.valueOf(600), LocalDate.of(EXAMPLE_YEAR, EXAMPLE_MONTH, 5));
   }
 
   private Transaction get3Transaction() {
-    return createTransaction(commodity5(), commodity6(), BigDecimal.valueOf(700), LocalDate.of(transactionYear, transactionMonth, 11));
+    return createTransaction(commodity5(), commodity6(), BigDecimal.valueOf(700), LocalDate.of(EXAMPLE_YEAR, EXAMPLE_MONTH, 11));
   }
 
   private Transaction get4Transaction() {
-    return createTransaction(commodity7(), commodity8(), BigDecimal.valueOf(800), LocalDate.of(transactionYear, transactionMonth, 28));
+    return createTransaction(commodity7(), commodity8(), BigDecimal.valueOf(800), LocalDate.of(EXAMPLE_YEAR, EXAMPLE_MONTH, 28));
   }
 
   private Transaction get5Transaction() {
-    return createTransaction(commodity9(), commodity10(), BigDecimal.valueOf(900), LocalDate.of(transactionYear, transactionMonth, 29));
+    return createTransaction(commodity9(), commodity10(), BigDecimal.valueOf(900), LocalDate.of(EXAMPLE_YEAR, EXAMPLE_MONTH, 29));
   }
 
   private Transaction createTransaction(Commodity notSold, Commodity sold, BigDecimal commoditySoldFor, LocalDate transactionDate) {
@@ -156,61 +156,60 @@ public class SummaryServiceTest {
 
     sold.setGotTime(transactionDate);
     sold.setSoldTime(transactionDate);
-    sold.setCurrentPrice(commoditySoldFor);
+    sold.setNewPrice(commoditySoldFor);
 
     return Transaction.builder()
         .date(transactionDate)
         .earned(commoditySoldFor)
-        .price(notSold.getPrice().add(sold.getPrice()))
+        .price(notSold.getOldPrice().add(sold.getOldPrice()))
         .commodities(Arrays.asList(notSold, sold)).build();
   }
 
-  private Commodity createCommodity(
-      String producer, BigDecimal price, BufferedImage image) {
+  private Commodity createCommodity(String producer) {
     return Commodity.builder()
         .producer(producer)
-        .price(price)
-        .currentPrice(price)
-        .images(Collections.singletonList(image)).build();
+        .oldPrice(OLD_PRICE)
+        .newPrice(NEW_PRICE)
+        .images(Collections.singletonList(ImageMother.exampleBufferedImage())).build();
   }
 
   private Commodity commodity1() {
-    return createCommodity("Nike", samePrice, exampleImage);
+    return createCommodity("Nike");
   }
 
   private Commodity commodity2() {
-    return createCommodity("Orange", samePrice, exampleImage);
+    return createCommodity("Orange");
   }
 
   private Commodity commodity3() {
-    return createCommodity("Nike", samePrice, exampleImage);
+    return createCommodity("Nike");
   }
 
   private Commodity commodity4() {
-    return createCommodity("Nike", samePrice, exampleImage);
+    return createCommodity("Nike");
   }
 
   private Commodity commodity5() {
-    return createCommodity("Orange", samePrice, exampleImage);
+    return createCommodity("Orange");
   }
 
   private Commodity commodity6() {
-    return createCommodity("Microsoft", samePrice, exampleImage);
+    return createCommodity("Microsoft");
   }
 
   private Commodity commodity7() {
-    return createCommodity("Nike", samePrice, exampleImage);
+    return createCommodity("Nike");
   }
 
   private Commodity commodity8() {
-    return createCommodity("Microsoft", samePrice, exampleImage);
+    return createCommodity("Microsoft");
   }
 
   private Commodity commodity9() {
-    return createCommodity("Sony", samePrice, exampleImage);
+    return createCommodity("Sony");
   }
 
   private Commodity commodity10() {
-    return createCommodity("Apple", samePrice, exampleImage);
+    return createCommodity("Apple");
   }
 }

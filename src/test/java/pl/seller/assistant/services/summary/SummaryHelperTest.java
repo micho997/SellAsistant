@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class SummaryHelperTest {
@@ -134,7 +133,7 @@ public class SummaryHelperTest {
     // given
     List<CommodityDto> commodities = new ArrayList<>(getExampleCommoditiesDtoList());
     CommodityDto commodityWithHighestPrice = CommodityDto.builder()
-        .price(BigDecimal.valueOf(10000)).build();
+        .oldPrice(BigDecimal.valueOf(10000)).build();
     commodities.add(commodityWithHighestPrice);
 
     // when
@@ -149,8 +148,8 @@ public class SummaryHelperTest {
     // given
     List<CommodityDto> commodities = new ArrayList<>(getExampleCommoditiesDtoList());
     CommodityDto commodityWithHighestProfit = CommodityDto.builder()
-        .price(BigDecimal.valueOf(100))
-        .currentPrice(BigDecimal.valueOf(5100))
+        .oldPrice(BigDecimal.valueOf(100))
+        .newPrice(BigDecimal.valueOf(5100))
         .soldTime(LocalDate.now()).build();
     commodities.add(commodityWithHighestProfit);
 
@@ -175,16 +174,16 @@ public class SummaryHelperTest {
   }
 
   private List<TransactionDto> getExampleTransactionsDtoList() {
-    TransactionDto transactionDto = dto(exampleTransaction(), Collections.singletonList(1L));
+    TransactionDto transactionDto = dto(exampleTransaction());
     transactionDto.setPrice(BigDecimal.valueOf(100));
     transactionDto.setEarned(BigDecimal.valueOf(200));
     return Arrays.asList(transactionDto, transactionDto, transactionDto, transactionDto, transactionDto);
   }
 
   private List<CommodityDto> getExampleCommoditiesDtoList() {
-    CommodityDto commodityDtoSold = CommodityMother.dto(carlinSword(), 1L);
+    CommodityDto commodityDtoSold = CommodityMother.dto(carlinSword());
     commodityDtoSold.setSoldTime(LocalDate.now());
-    CommodityDto commodityDtoNotSold = CommodityMother.dto(pugSocks(), 1L);
+    CommodityDto commodityDtoNotSold = CommodityMother.dto(pugSocks());
     return Arrays.asList(commodityDtoSold, commodityDtoSold, commodityDtoSold, commodityDtoSold, commodityDtoNotSold);
   }
 

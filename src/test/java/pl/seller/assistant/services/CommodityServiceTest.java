@@ -5,10 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static pl.seller.assistant.mother.CommodityMother.carlinSword;
 import static pl.seller.assistant.mother.CommodityMother.pugSocks;
 import static pl.seller.assistant.mother.CommodityMother.pumaHat;
+import static pl.seller.assistant.mother.ExampleData.EXAMPLE_ID;
 import static pl.seller.assistant.mother.SameObjectChecker.equalCommodityCommodityEntity;
-import static pl.seller.assistant.mother.SameObjectChecker.equalCommodityDtoCommodityEntity;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.seller.assistant.databases.entity.CommodityEntity;
 import pl.seller.assistant.models.Commodity;
-import pl.seller.assistant.models.CommodityDto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,33 +28,35 @@ class CommodityServiceTest {
   @Autowired
   private CommodityService commodityService;
 
-  private Commodity exampleCommodity;
-
-  @BeforeEach
-  void setUp() {
-    exampleCommodity = carlinSword();
-  }
-
   @Test
   void should_save_commodity_in_database() {
     // then
-    CommodityEntity entity = commodityService.save(exampleCommodity);
+    CommodityEntity entity = commodityService.save(pumaHat());
 
     // when
-    equalCommodityCommodityEntity(exampleCommodity, entity);
+    equalCommodityCommodityEntity(pumaHat(), entity);
   }
 
   @Test
   void should_get_commodity_from_database() {
     // given
-    CommodityEntity saved = commodityService.save(exampleCommodity);
+    CommodityEntity saved = commodityService.save(pugSocks());
 
     // then
-    Optional<CommodityDto> result = commodityService.getById(saved.getId());
+    Optional<CommodityEntity> commodityFromDatabase = commodityService.getById(saved.getId());
 
     // when
-    assertTrue(result.isPresent());
-    equalCommodityDtoCommodityEntity(result.get(), saved);
+    assertTrue(commodityFromDatabase.isPresent());
+    assertEquals(saved.getId(), commodityFromDatabase.get().getId());
+  }
+
+  @Test
+  void should_return_empty_if_id_does_not_exists() {
+    // then
+    Optional<CommodityEntity> commodityFromDatabase = commodityService.getById(EXAMPLE_ID);
+
+    // when
+    assertTrue(commodityFromDatabase.isEmpty());
   }
 
   @Test
@@ -65,14 +65,15 @@ class CommodityServiceTest {
     for (Commodity commodity : take10Correct5IncorrectGotTimeCommodities()) {
       commodityService.save(commodity);
     }
+    int expectedSize = 10;
 
     // when
 
-    List<CommodityDto> result = commodityService
+    List<CommodityEntity> result = commodityService
         .getByGotTime(LocalDate.of(2020, 1, 31), LocalDate.of(2020, 3, 1));
 
     // then
-    assertEquals(10, result.size());
+    assertEquals(expectedSize, result.size());
   }
 
   @Test
@@ -81,13 +82,14 @@ class CommodityServiceTest {
     for (Commodity commodity : take10Correct5NotSold5IncorrectSoldTimeCommodities()) {
       commodityService.save(commodity);
     }
+    int expectedSize = 10;
 
     // when
-    List<CommodityDto> result = commodityService
+    List<CommodityEntity> result = commodityService
         .getBySoldTime(LocalDate.of(2020, 1, 31), LocalDate.of(2020, 3, 1));
 
     // then
-    assertEquals(10, result.size());
+    assertEquals(expectedSize, result.size());
   }
 
   private List<Commodity> take10Correct5IncorrectGotTimeCommodities() {

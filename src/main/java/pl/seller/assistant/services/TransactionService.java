@@ -1,16 +1,14 @@
 package pl.seller.assistant.services;
 
-import static pl.seller.assistant.databases.EntityMapper.toDto;
 import static pl.seller.assistant.databases.EntityMapper.toEntity;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.seller.assistant.databases.EntityMapper;
 import pl.seller.assistant.databases.TransactionsRepository;
 import pl.seller.assistant.databases.entity.CommodityEntity;
+import pl.seller.assistant.databases.entity.TransactionEntity;
 import pl.seller.assistant.models.Transaction;
-import pl.seller.assistant.models.TransactionDto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,30 +24,27 @@ public class TransactionService {
   private final CommodityService commodityService;
 
   @Transactional
-  public TransactionDto save(Transaction transaction) {
+  public TransactionEntity save(Transaction transaction, String username) {
     List<CommodityEntity> entities = transaction.getCommodities().stream()
         .map(commodityService::save)
         .collect(Collectors.toList());
-    return toDto(transactionsRepository.save(toEntity(transaction, entities)));
+    return transactionsRepository.save(toEntity(transaction, entities, username));
   }
 
   @Transactional
-  public Optional<TransactionDto> getById(Long id) {
-    return transactionsRepository.findById(id)
-        .map(EntityMapper::toDto);
+  public Optional<TransactionEntity> getById(Long id) {
+    return transactionsRepository.findById(id);
   }
 
-  public List<TransactionDto> getAll() {
-    return transactionsRepository.findAll().stream()
-        .map(EntityMapper::toDto)
-        .collect(Collectors.toList());
+  public List<TransactionEntity> getAllForUser(String username) {
+    return transactionsRepository.findAllByOwner(username);
   }
 
-  public List<TransactionDto> getByDate(LocalDate from, LocalDate to) {
-    List<TransactionDto> result = new ArrayList<>();
-    for (TransactionDto transactionDto : getAll()) {
-      if (transactionDto.getDate().isAfter(from) && transactionDto.getDate().isBefore(to)) {
-        result.add(transactionDto);
+  public List<TransactionEntity> getByDate(String username, LocalDate from, LocalDate to) {
+    List<TransactionEntity> result = new ArrayList<>();
+    for (TransactionEntity transactionEntity : getAllForUser(username)) {
+      if (transactionEntity.getDate().isAfter(from) && transactionEntity.getDate().isBefore(to)) {
+        result.add(transactionEntity);
       }
     }
     return result;

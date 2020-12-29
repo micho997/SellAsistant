@@ -1,8 +1,10 @@
 package pl.seller.assistant.mother;
 
 import static pl.seller.assistant.mother.CommodityMother.carlinSword;
+import static pl.seller.assistant.mother.CommodityMother.pumaHat;
+import static pl.seller.assistant.mother.ExampleData.EXAMPLE_ID;
+import static pl.seller.assistant.mother.ExampleData.EXAMPLE_USERNAME;
 
-import pl.seller.assistant.databases.entity.CommodityEntity;
 import pl.seller.assistant.databases.entity.TransactionEntity;
 import pl.seller.assistant.models.Transaction;
 import pl.seller.assistant.models.TransactionDto;
@@ -24,23 +26,25 @@ public class TransactionMother {
 
   public static Transaction exampleTransactionWithEntry() {
     Transaction transaction = exampleTransaction();
-    transaction.setCommodities(Collections.singletonList(carlinSword()));
+    transaction.setCommodities(List.of(carlinSword()));
     return transaction;
   }
 
-  public static TransactionDto dto(Transaction transaction, List<Long> commodityIds) {
+  public static TransactionDto dto(Transaction transaction) {
     return TransactionDto.builder()
+        .id(EXAMPLE_ID)
         .date(transaction.getDate())
         .price(transaction.getPrice())
-        .earned(transaction.getEarned())
-        .commodityIds(commodityIds).build();
+        .earned(transaction.getEarned()).build();
   }
 
-  public static TransactionEntity entity(Transaction transaction, List<CommodityEntity> commodityEntities) {
+  public static TransactionEntity entity(Transaction transaction) {
     return TransactionEntity.builder()
+        .id(EXAMPLE_ID)
         .date(transaction.getDate())
         .price(transaction.getPrice())
         .earned(transaction.getEarned())
-        .commodityIds(commodityEntities).build();
+        .owner(EXAMPLE_USERNAME)
+        .commodityEntities(Collections.singletonList(CommodityMother.entity(pumaHat()))).build();
   }
 }

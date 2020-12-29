@@ -56,11 +56,11 @@ public class SummaryHelper {
   }
 
   public CommodityDto getCommodityWithHighestPrice(List<CommodityDto> commodities) {
-    return Collections.max(commodities, Comparator.comparing(CommodityDto::getPrice));
+    return Collections.max(commodities, Comparator.comparing(CommodityDto::getOldPrice));
   }
 
   public CommodityDto getCommodityWithHighestProfit(List<CommodityDto> commodities) {
-    return Collections.max(commodities, Comparator.comparing(CommodityDto::getCurrentPrice));
+    return Collections.max(commodities, Comparator.comparing(CommodityDto::getNewPrice));
   }
 
   public TransactionDto findLastTransactionDate(List<TransactionDto> transactions) {

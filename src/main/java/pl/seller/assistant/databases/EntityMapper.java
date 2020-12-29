@@ -23,40 +23,23 @@ import javax.sql.rowset.serial.SerialBlob;
 
 public class EntityMapper {
 
-  public static CommodityEntity toEntity(Commodity commodity, ImagesEntity imagesEntity) {
-    return CommodityEntity.builder()
-        .producer(commodity.getProducer())
-        .price(commodity.getPrice().setScale(2, RoundingMode.CEILING))
-        .currentPrice(commodity.getCurrentPrice())
-        .gotTime(commodity.getGotTime())
-        .soldTime(commodity.getSoldTime())
-        .imageId(imagesEntity).build();
-  }
-
-  public static CommodityEntity toEntity(CommodityDto commodityDto, ImagesEntity imagesEntity) {
-    return CommodityEntity.builder()
-        .producer(commodityDto.getProducer())
-        .price(commodityDto.getPrice().setScale(2, RoundingMode.CEILING))
-        .currentPrice(commodityDto.getCurrentPrice())
-        .gotTime(commodityDto.getGotTime())
-        .soldTime(commodityDto.getSoldTime())
-        .imageId(imagesEntity).build();
-  }
-
-  public static TransactionEntity toEntity(Transaction transaction, List<CommodityEntity> commodityEntities) {
+  public static TransactionEntity toEntity(Transaction transaction, List<CommodityEntity> commodityEntities, String owner) {
     return TransactionEntity.builder()
         .date(transaction.getDate())
         .price(transaction.getPrice().setScale(2, RoundingMode.CEILING))
         .earned(transaction.getEarned())
-        .commodityIds(commodityEntities).build();
+        .commodityEntities(commodityEntities)
+        .owner(owner).build();
   }
 
-  public static TransactionEntity toEntity(TransactionDto transactionDto, List<CommodityEntity> commodityEntities) {
-    return TransactionEntity.builder()
-        .date(transactionDto.getDate())
-        .price(transactionDto.getPrice().setScale(2, RoundingMode.CEILING))
-        .earned(transactionDto.getEarned())
-        .commodityIds(commodityEntities).build();
+  public static CommodityEntity toEntity(Commodity commodity, ImagesEntity imagesEntity) {
+    return CommodityEntity.builder()
+        .producer(commodity.getProducer())
+        .oldPrice(commodity.getOldPrice().setScale(2, RoundingMode.CEILING))
+        .newPrice(commodity.getNewPrice())
+        .gotTime(commodity.getGotTime())
+        .soldTime(commodity.getSoldTime())
+        .imagesEntity(imagesEntity).build();
   }
 
   public static ImagesEntity toEntity(List<BufferedImage> images) {
@@ -83,11 +66,10 @@ public class EntityMapper {
     return CommodityDto.builder()
         .id(entity.getId())
         .producer(entity.getProducer())
-        .price(entity.getPrice().setScale(2, RoundingMode.CEILING))
-        .currentPrice(entity.getCurrentPrice())
+        .oldPrice(entity.getOldPrice().setScale(2, RoundingMode.CEILING))
+        .newPrice(entity.getNewPrice())
         .gotTime(entity.getGotTime())
-        .soldTime(entity.getSoldTime())
-        .imageId(entity.getImageId().getId()).build();
+        .soldTime(entity.getSoldTime()).build();
   }
 
   public static TransactionDto toDto(TransactionEntity entity) {
@@ -95,10 +77,7 @@ public class EntityMapper {
         .id(entity.getId())
         .date(entity.getDate())
         .price(entity.getPrice().setScale(2, RoundingMode.CEILING))
-        .earned(entity.getEarned())
-        .commodityIds(entity.getCommodityIds().stream()
-            .map(CommodityEntity::getId)
-            .collect(Collectors.toList())).build();
+        .earned(entity.getEarned()).build();
   }
 
   public static List<Blob> toBlob(List<BufferedImage> images) {

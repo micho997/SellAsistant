@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -19,5 +18,4 @@ public class TransactionDto {
   private LocalDate date;
   private BigDecimal price;
   private BigDecimal earned;
-  private List<Long> commodityIds;
 }
