@@ -2,20 +2,18 @@ package pl.seller.assistant.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static pl.seller.assistant.mother.CommodityMother.pumaHat;
-import static pl.seller.assistant.mother.TransactionMother.exampleTransaction;
+import static pl.seller.assistant.mother.ExampleData.EXAMPLE_ID;
+import static pl.seller.assistant.mother.ExampleData.EXAMPLE_USERNAME;
+import static pl.seller.assistant.mother.TransactionMother.exampleTransactionWithEntry;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.seller.assistant.models.Transaction;
-import pl.seller.assistant.models.TransactionDto;
+import pl.seller.assistant.databases.entity.TransactionEntity;
 import pl.seller.assistant.mother.SameObjectChecker;
 
-import java.util.Collections;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
@@ -25,33 +23,34 @@ class TransactionServiceTest {
   @Autowired
   private TransactionService transactionService;
 
-  private Transaction exampleTransaction;
-
-  @BeforeEach
-  void setUp() {
-    exampleTransaction = exampleTransaction();
-    exampleTransaction.setCommodities(Collections.singletonList(pumaHat()));
-  }
-
   @Test
   void should_save_transaction_in_database() {
     // then
-    TransactionDto transactionDto = transactionService.save(exampleTransaction);
+    TransactionEntity transactionEntity = transactionService.save(exampleTransactionWithEntry(), EXAMPLE_USERNAME);
 
     // when
-    SameObjectChecker.equalTransactionTransactionDto(exampleTransaction, transactionDto);
+    SameObjectChecker.equalTransactionTransactionEntity(exampleTransactionWithEntry(), transactionEntity);
   }
 
   @Test
   void should_get_transaction_by_id() {
     // given
-    TransactionDto transactionDto1 = transactionService.save(exampleTransaction);
+    TransactionEntity transactionEntity = transactionService.save(exampleTransactionWithEntry(), EXAMPLE_USERNAME);
 
     // then
-    Optional<TransactionDto> transactionDto2 = transactionService.getById(transactionDto1.getId());
+    Optional<TransactionEntity> transactionFromDatabase = transactionService.getById(transactionEntity.getId());
 
     // when
-    assertTrue(transactionDto2.isPresent());
-    assertEquals(transactionDto1.getId(), transactionDto2.get().getId());
+    assertTrue(transactionFromDatabase.isPresent());
+    assertEquals(transactionEntity.getId(), transactionFromDatabase.get().getId());
+  }
+
+  @Test
+  void should_return_empty_if_id_does_not_exists() {
+    // then
+    Optional<TransactionEntity> transactionFromDatabase = transactionService.getById(EXAMPLE_ID);
+
+    // when
+    assertTrue(transactionFromDatabase.isEmpty());
   }
 }

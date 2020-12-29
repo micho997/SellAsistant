@@ -17,8 +17,8 @@ import java.util.List;
 public class Commodity {
 
   private String producer;
-  private BigDecimal price;
-  private BigDecimal currentPrice;
+  private BigDecimal oldPrice;
+  private BigDecimal newPrice;
   private LocalDate gotTime;
   private LocalDate soldTime;
   private List<BufferedImage> images;

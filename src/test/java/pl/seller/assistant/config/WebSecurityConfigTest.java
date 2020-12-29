@@ -19,5 +19,4 @@ class WebSecurityConfigTest {
   void should_created_config_bean() {
     assertNotNull(webSecurityConfig.getPasswordEncoder());
   }
-
 }

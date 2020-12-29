@@ -30,14 +30,14 @@ public class CommodityEntity implements Serializable {
   private Long id;
   @Column(nullable = false)
   private String producer;
-  @Column(nullable = false)
-  private BigDecimal price;
-  @Column(name = "current_price", nullable = false)
-  private BigDecimal currentPrice;
+  @Column(name = "old_price", nullable = false)
+  private BigDecimal oldPrice;
+  @Column(name = "new_price", nullable = false)
+  private BigDecimal newPrice;
   @Column(name = "got_time", nullable = false)
   private LocalDate gotTime;
   @Column(name = "sold_time")
   private LocalDate soldTime;
   @OneToOne(fetch = FetchType.EAGER)
-  private ImagesEntity imageId;
+  private ImagesEntity imagesEntity;
 }

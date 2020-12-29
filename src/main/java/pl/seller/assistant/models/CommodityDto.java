@@ -16,9 +16,8 @@ public class CommodityDto {
 
   private Long id;
   private String producer;
-  private BigDecimal price;
-  private BigDecimal currentPrice;
+  private BigDecimal oldPrice;
+  private BigDecimal newPrice;
   private LocalDate gotTime;
   private LocalDate soldTime;
-  private Long imageId;
 }

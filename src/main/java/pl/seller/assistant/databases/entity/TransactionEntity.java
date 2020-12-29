@@ -35,6 +35,8 @@ public class TransactionEntity implements Serializable {
   private BigDecimal price;
   @Column(nullable = false)
   private BigDecimal earned;
+  @Column(nullable = false)
+  private String owner;
   @OneToMany(fetch = FetchType.EAGER)
-  private List<CommodityEntity> commodityIds;
+  private List<CommodityEntity> commodityEntities;
 }

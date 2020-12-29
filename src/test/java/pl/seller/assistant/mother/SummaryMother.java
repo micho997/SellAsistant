@@ -5,7 +5,6 @@ import static pl.seller.assistant.mother.TransactionMother.exampleTransaction;
 import pl.seller.assistant.services.summary.Summary;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 
 public class SummaryMother {
 
@@ -17,9 +16,9 @@ public class SummaryMother {
         .boughtCommodities(10)
         .soldCommodities(5)
         .mostPopularProducer("Nike")
-        .commodityWithHighestPrice(CommodityMother.dto(CommodityMother.carlinSword(), 1L))
-        .commodityWithHighestProfit(CommodityMother.dto(CommodityMother.pugSocks(), 2L))
-        .lastTransactionDate(TransactionMother.dto(exampleTransaction(), Collections.singletonList(1L)))
+        .commodityWithHighestPrice(CommodityMother.dto(CommodityMother.carlinSword()))
+        .commodityWithHighestProfit(CommodityMother.dto(CommodityMother.pugSocks()))
+        .lastTransactionDate(TransactionMother.dto(exampleTransaction()))
         .mountOfYear("OCTOBER2020").build();
   }
 }

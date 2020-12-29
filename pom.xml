@@ -43,11 +43,10 @@
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <jacoco-maven-plugin.version>0.8.4</jacoco-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
-    <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
-    <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
     <spring-ws-test.version>2.0.2.RELEASE</spring-ws-test.version>
     <postgresql.version>42.2.14</postgresql.version>
     <javax.el.version>3.0.1-b11</javax.el.version>
+    <log4j.version>1.2.17</log4j.version>
   </properties>
 
   <dependencies>
@@ -80,6 +79,13 @@
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+
 
     <dependency>
       <groupId>wsdl4j</groupId>
@@ -148,18 +154,6 @@
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>${json.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger2</artifactId>
-      <version>${springfox-swagger2.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger-ui</artifactId>
-      <version>${springfox-swagger-ui.version}</version>
     </dependency>
 
     <dependency>

@@ -1,7 +1,6 @@
 package pl.seller.assistant.mother;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.springframework.transaction.annotation.Transactional;
 import pl.seller.assistant.databases.entity.CommodityEntity;
@@ -17,45 +16,35 @@ public class SameObjectChecker {
 
   @Transactional
   public static void equalTransactionDtoTransactionEntity(TransactionDto transactionDto, TransactionEntity transactionEntity) {
+    assertEquals(transactionDto.getId(), transactionEntity.getId());
     assertEquals(transactionDto.getDate(), transactionEntity.getDate());
     assertEquals(transactionDto.getPrice(), transactionEntity.getPrice());
     assertEquals(transactionDto.getEarned(), transactionEntity.getEarned());
-    assertNotNull(transactionEntity.getCommodityIds());
-    assertNotNull(transactionDto.getCommodityIds());
   }
 
   public static void equalTransactionTransactionEntity(Transaction transaction, TransactionEntity transactionEntity) {
     assertEquals(transaction.getDate(), transactionEntity.getDate());
     assertEquals(transaction.getPrice(), transactionEntity.getPrice());
     assertEquals(transaction.getEarned(), transactionEntity.getEarned());
-    assertEquals(transaction.getCommodities().size(), transactionEntity.getCommodityIds().size());
-  }
-
-  public static void equalTransactionTransactionDto(Transaction transaction, TransactionDto transactionDto) {
-    assertEquals(transaction.getDate(), transactionDto.getDate());
-    assertEquals(transaction.getPrice(), transactionDto.getPrice());
-    assertEquals(transaction.getEarned(), transactionDto.getEarned());
-    assertEquals(transaction.getCommodities().size(), transactionDto.getCommodityIds().size());
+    assertEquals(transaction.getCommodities().size(), transactionEntity.getCommodityEntities().size());
   }
 
   public static void equalCommodityCommodityEntity(Commodity commodity, CommodityEntity commodityEntity) {
     assertEquals(commodity.getProducer(), commodityEntity.getProducer());
-    assertEquals(commodity.getPrice(), commodityEntity.getPrice());
-    assertEquals(commodity.getCurrentPrice(), commodityEntity.getCurrentPrice());
+    assertEquals(commodity.getOldPrice(), commodityEntity.getOldPrice());
+    assertEquals(commodity.getNewPrice(), commodityEntity.getNewPrice());
     assertEquals(commodity.getGotTime(), commodityEntity.getGotTime());
     assertEquals(commodity.getSoldTime(), commodityEntity.getSoldTime());
-    assertNotNull(commodity.getImages());
-    assertNotNull(commodityEntity.getImageId());
+    assertEquals(commodity.getImages().size(), commodityEntity.getImagesEntity().getImages().size());
   }
 
   public static void equalCommodityDtoCommodityEntity(CommodityDto commodityDto, CommodityEntity commodityEntity) {
+    assertEquals(commodityDto.getId(), commodityEntity.getId());
     assertEquals(commodityDto.getProducer(), commodityEntity.getProducer());
-    assertEquals(commodityDto.getPrice(), commodityEntity.getPrice());
-    assertEquals(commodityDto.getCurrentPrice(), commodityEntity.getCurrentPrice());
+    assertEquals(commodityDto.getOldPrice(), commodityEntity.getOldPrice());
+    assertEquals(commodityDto.getNewPrice(), commodityEntity.getNewPrice());
     assertEquals(commodityDto.getGotTime(), commodityEntity.getGotTime());
     assertEquals(commodityDto.getSoldTime(), commodityEntity.getSoldTime());
-    assertNotNull(commodityEntity.getImageId()
-    );
   }
 
   public static void equalSummarySummaryEntity(Summary summary, SummaryEntity summaryEntity) {
