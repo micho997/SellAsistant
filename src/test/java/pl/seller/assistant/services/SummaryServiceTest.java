@@ -61,26 +61,27 @@ public class SummaryServiceTest {
     createTransactions();
 
     // when
-    SummaryEntity summaryResult = summaryService.makeMonthlySummary(EXAMPLE_MONTH_OF_YEAR, EXAMPLE_USERNAME);
+    Optional<SummaryEntity> summaryResult = summaryService.makeMonthlySummary(EXAMPLE_MONTH_OF_YEAR, EXAMPLE_USERNAME);
 
     // then
-    assertEquals(EXAMPLE_USERNAME, summaryResult.getOwner());
-    assertEquals(BigDecimal.valueOf(3500).setScale(2, RoundingMode.CEILING), summaryResult.getProfit());
-    assertEquals(BigDecimal.valueOf(1000).setScale(2, RoundingMode.CEILING), summaryResult.getCost());
-    assertEquals(BigDecimal.valueOf(2500).setScale(2, RoundingMode.CEILING), summaryResult.getProfitMinusCost());
-    assertEquals(10, summaryResult.getBoughtCommodities());
-    assertEquals(5, summaryResult.getSoldCommodities());
-    assertEquals("Nike", summaryResult.getMostPopularProducer());
-    assertNotNull(summaryResult.getCommodityWithHighestPriceId());
-    assertNotNull(summaryResult.getCommodityWithHighestProfitId());
-    assertNotNull(summaryResult.getLastTransactionDateId());
+    assertTrue(summaryResult.isPresent());
+    assertEquals(EXAMPLE_USERNAME, summaryResult.get().getOwner());
+    assertEquals(BigDecimal.valueOf(3500).setScale(2, RoundingMode.CEILING), summaryResult.get().getProfit());
+    assertEquals(BigDecimal.valueOf(1000).setScale(2, RoundingMode.CEILING), summaryResult.get().getCost());
+    assertEquals(BigDecimal.valueOf(2500).setScale(2, RoundingMode.CEILING), summaryResult.get().getProfitMinusCost());
+    assertEquals(10, summaryResult.get().getBoughtCommodities());
+    assertEquals(5, summaryResult.get().getSoldCommodities());
+    assertEquals("Nike", summaryResult.get().getMostPopularProducer());
+    assertNotNull(summaryResult.get().getCommodityWithHighestPriceId());
+    assertNotNull(summaryResult.get().getCommodityWithHighestProfitId());
+    assertNotNull(summaryResult.get().getLastTransactionDateId());
   }
 
   @Test
   public void should_save_monthly_summary() {
     // given
     createTransactions();
-    SummaryEntity summaryResult = summaryService.makeMonthlySummary(EXAMPLE_MONTH_OF_YEAR, EXAMPLE_USERNAME);
+    SummaryEntity summaryResult = summaryService.makeMonthlySummary(EXAMPLE_MONTH_OF_YEAR, EXAMPLE_USERNAME).orElseThrow();
 
     // when
     Optional<SummaryEntity> summaryFromDatabase = summaryService.getByIdAndOwner(summaryResult.getMonthOfYear(), EXAMPLE_USERNAME);

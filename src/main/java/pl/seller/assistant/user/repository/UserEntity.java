@@ -36,6 +36,8 @@ public class UserEntity implements UserDetails {
   private String password;
   @Column(nullable = false)
   private String role;
+  @Column(nullable = false)
+  private String email;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
