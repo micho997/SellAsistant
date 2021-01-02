@@ -40,8 +40,16 @@ class UserServiceTest {
   @Test
   void should_not_create_duplicate_user() {
     // given
-    UserEntity originalUsername = testUser();
-    UserEntity duplicateUsername = testUser();
+    UserEntity originalUsername = UserEntity.builder()
+        .username("SameName")
+        .password("TEST")
+        .email("TEST")
+        .role("ROLE_USER").build();
+    UserEntity duplicateUsername = UserEntity.builder()
+        .username("SameName")
+        .password("TEST")
+        .email("TEST")
+        .role("ROLE_USER").build();
 
     // when
     userService.addUser(originalUsername);

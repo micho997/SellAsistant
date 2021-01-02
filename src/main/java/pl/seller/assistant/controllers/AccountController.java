@@ -26,6 +26,6 @@ public class AccountController {
 
   @GetMapping("/{username}")
   public ResponseEntity<SummaryEntity> getMonthlySummary() {
-    return ResponseEntity.ok(summaryService.getMonthlySummary(LocalDate.now().minusMonths(1), "Username"));
+    return ResponseEntity.ok(summaryService.getMonthlySummary(LocalDate.now().minusMonths(1), "Username").orElseThrow());
   }
 }

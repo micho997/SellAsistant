@@ -29,21 +29,26 @@ public class SummaryService {
   private final SummaryHelper summaryHelper;
   private final SummaryRepository summaryRepository;
 
-  public SummaryEntity getMonthlySummary(LocalDate monthOfYear, String owner) {
-    Optional<SummaryEntity> optionalSummaryEntity = getByIdAndOwner(createSummaryId(monthOfYear.getMonth(), monthOfYear.getYear()), owner);
-    return optionalSummaryEntity.orElseGet(() -> makeMonthlySummary(monthOfYear, owner));
+  public Optional<SummaryEntity> getMonthlySummary(LocalDate monthOfYear, String owner) {
+    return getByIdAndOwner(createSummaryId(monthOfYear.getMonth(), monthOfYear.getYear()), owner);
   }
 
-  public SummaryEntity makeMonthlySummary(LocalDate monthOfYear, String owner) {
+  public Optional<SummaryEntity> makeMonthlySummary(LocalDate monthOfYear, String owner) {
     Summary summary = makeSummaryForDate(owner,
         LocalDate.of(monthOfYear.getYear(), monthOfYear.getMonth().minus(1), monthOfYear.getMonth().minus(1).maxLength()),
         LocalDate.of(monthOfYear.getYear(), monthOfYear.getMonth().plus(1), 1));
+    if (summary == null) {
+      return Optional.empty();
+    }
     setCurrentMonth(summary, createSummaryId(monthOfYear.getMonth(), monthOfYear.getYear()));
-    return saveMonthlySummary(summary, owner);
+    return Optional.of(saveMonthlySummary(summary, owner));
   }
 
   public Summary makeSummaryForDate(String username, LocalDate from, LocalDate to) {
     List<TransactionEntity> transactionEntities = transactionService.getByDate(username, from, to);
+    if (transactionEntities.size() == 0) {
+      return null;
+    }
     List<TransactionDto> transactions = transactionEntities.stream()
         .map(EntityMapper::toDto)
         .collect(toList());
