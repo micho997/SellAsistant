@@ -14,6 +14,7 @@ Technology
 * Java 11
 * Spring data
 * Spring security
+* Javax mail
 * Hibernate
 * H2
 * Spring boot
