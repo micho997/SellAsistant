@@ -23,10 +23,7 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <lombok.version>1.18.16</lombok.version>
-    <log4j.version>1.2.17</log4j.version>
     <mail.version>1.4</mail.version>
-    <jasypt.version>1.9.3</jasypt.version>
-    <jasypt-spring-boot.version>3.0.3</jasypt-spring-boot.version>
     <awaitility.version>3.1.0</awaitility.version>
     <jaxb-runtime.version>2.3.3</jaxb-runtime.version>
     <javax.el.version>3.0.1-b11</javax.el.version>
@@ -79,41 +76,16 @@
     </dependency>
 
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
       <version>${mail.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>org.jasypt</groupId>
-      <artifactId>jasypt</artifactId>
-      <version>${jasypt.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.github.ulisesbocchio</groupId>
-      <artifactId>jasypt-spring-boot</artifactId>
-      <version>${jasypt-spring-boot.version}</version>
-    </dependency>
-
-
-
-    <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
       <version>${awaitility.version}</version>
       <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>wsdl4j</groupId>
-      <artifactId>wsdl4j</artifactId>
     </dependency>
 
     <dependency>
